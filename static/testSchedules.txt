@@ -1,0 +1,443 @@
+DSAI 2201
+Introduction to Data Science & AI
+Course Information
+Class Selection
+Select a class option
+8 options
+Option
+
+Status
+
+Session
+
+Class
+
+Meeting Dates
+
+Days and Times
+
+Room
+
+Instructor
+
+Seats
+
+1
+
+Open
+
+Regular Academic Session
+
+Lecture - Class 1950 -Section 1
+Laboratory - Class 1951 -Section 2
+
+04/05/2025 - 26/06/2025
+
+Monday
+2:00PM to 4:00PM
+Wednesday
+2:00PM to 4:00PM
+Tuesday
+8:00AM to 11:00AM
+Sunday
+8:00AM to 11:00AM
+
+01.1.0601.1.06
+10.2.1710.2.17
+
+Mohamed Salah Amine BenouarMohamed Salah Amine Benouar
+Mohamed Salah Amine BenouarMohamed Salah Amine Benouar
+
+Open Seats 68 of 120
+Open Seats 14 of 20
+
+
+2
+
+Open
+
+Regular Academic Session
+
+Lecture - Class 1950 -Section 1
+Laboratory - Class 1952 -Section 3
+
+04/05/2025 - 26/06/2025
+
+Monday
+2:00PM to 4:00PM
+Wednesday
+2:00PM to 4:00PM
+Monday
+8:00AM to 11:00AM
+Wednesday
+8:00AM to 11:00AM
+
+01.1.0601.1.06
+10.2.1710.2.17
+
+Mohamed Salah Amine BenouarMohamed Salah Amine Benouar
+Mohamed Salah Amine BenouarMohamed Salah Amine Benouar
+
+Open Seats 68 of 120
+Open Seats 7 of 20
+
+
+3
+
+Open
+
+Regular Academic Session
+
+Lecture - Class 1950 -Section 1
+Laboratory - Class 1953 -Section 4
+
+04/05/2025 - 26/06/2025
+
+Monday
+2:00PM to 4:00PM
+Wednesday
+2:00PM to 4:00PM
+Monday
+5:00PM to 8:00PM
+Wednesday
+5:00PM to 8:00PM
+
+01.1.0601.1.06
+10.2.1710.2.17
+
+Mohamed Salah Amine BenouarMohamed Salah Amine Benouar
+Ahmed ElwhishiAhmed Elwhishi
+
+Open Seats 68 of 120
+Open Seats 3 of 20
+
+
+4
+
+Open
+
+Regular Academic Session
+
+Lecture - Class 1950 -Section 1
+Laboratory - Class 1954 -Section 5
+
+04/05/2025 - 26/06/2025
+
+Monday
+2:00PM to 4:00PM
+Wednesday
+2:00PM to 4:00PM
+Tuesday
+2:00PM to 5:00PM
+Sunday
+2:00PM to 5:00PM
+
+01.1.0601.1.06
+10.2.1710.2.17
+
+Mohamed Salah Amine BenouarMohamed Salah Amine Benouar
+Somaiyeh MahmoudZadehSomaiyeh MahmoudZadeh
+
+Open Seats 68 of 120
+Open Seats 4 of 20
+
+
+5
+
+Open
+
+Regular Academic Session
+
+Lecture - Class 1956 -Section 7
+Laboratory - Class 1959 -Section 10
+
+04/05/2025 - 26/06/2025
+
+Tuesday
+4:00PM to 6:00PM
+Sunday
+4:00PM to 6:00PM
+Tuesday
+11:00AM to 2:00PM
+Sunday
+11:00AM to 2:00PM
+
+01.1.0601.1.06
+10.2.0410.2.04
+
+Md Moshiur Rahman FaraziMd Moshiur Rahman Farazi
+Md Moshiur Rahman FaraziMd Moshiur Rahman Farazi
+
+Open Seats 94 of 120
+Open Seats 13 of 20
+
+
+6
+
+Open
+
+Regular Academic Session
+
+Lecture - Class 1956 -Section 7
+Laboratory - Class 1960 -Section 11
+
+04/05/2025 - 26/06/2025
+
+Tuesday
+4:00PM to 6:00PM
+Sunday
+4:00PM to 6:00PM
+Monday
+8:00AM to 11:00AM
+Wednesday
+8:00AM to 11:00AM
+
+01.1.0601.1.06
+10.2.1610.2.16
+
+Md Moshiur Rahman FaraziMd Moshiur Rahman Farazi
+Oussama DjedidiOussama Djedidi
+
+Open Seats 94 of 120
+Open Seats 12 of 20
+
+
+7
+
+Open
+
+Regular Academic Session
+
+Lecture - Class 1956 -Section 7
+Laboratory - Class 1957 -Section 8
+
+04/05/2025 - 26/06/2025
+
+Tuesday
+4:00PM to 6:00PM
+Sunday
+4:00PM to 6:00PM
+Monday
+2:00PM to 5:00PM
+Wednesday
+2:00PM to 5:00PM
+
+01.1.0601.1.06
+10.2.1710.2.17
+
+Md Moshiur Rahman FaraziMd Moshiur Rahman Farazi
+Omer KoksalOmer Koksal
+
+Open Seats 94 of 120
+Open Seats 15 of 20
+
+
+8
+
+Open
+
+Regular Academic Session
+
+Lecture - Class 1956 -Section 7
+Laboratory - Class 1958 -Section 9
+
+04/05/2025 - 26/06/2025
+
+Tuesday
+4:00PM to 6:00PM
+Sunday
+4:00PM to 6:00PM
+Tuesday
+11:00AM to 2:00PM
+Sunday
+11:00AM to 2:00PM
+
+01.1.0601.1.06
+10.2.1710.2.17
+
+Md Moshiur Rahman FaraziMd Moshiur Rahman Farazi
+Somaiyeh MahmoudZadehSomaiyeh MahmoudZadeh
+
+Open Seats 94 of 120
+Open Seats 14 of 20
+
+
+
+SSHA 1003
+Introductory Psychology
+Course Information
+Class Selection
+Select a class option
+1 option
+Option
+
+Status
+
+Session
+
+Class
+
+Meeting Dates
+
+Days and Times
+
+Room
+
+Instructor
+
+Seats
+
+1
+
+Open
+
+Regular Academic Session
+
+LecTheatre - Class 1746 -Section 1
+Lecture - Class 1747 -Section 2
+
+04/05/2025 - 26/06/2025
+
+Monday
+8:00AM to 9:30AM
+Wednesday
+8:00AM to 9:30AM
+Tuesday
+8:00AM to 9:30AM
+Sunday
+8:00AM to 9:30AM
+
+05.2.2305.2.23
+05.2.3605.2.36
+
+Seydahmet ErcanSeydahmet Ercan
+Seydahmet ErcanSeydahmet Ercan
+
+Open Seats 11 of 30
+Open Seats 11 of 30
+
+
+
+
+
+
+
+
+
+SOFT 2301
+Software Project Management
+Course Information
+Class Selection
+Select a class option
+3 options
+Option
+
+Status
+
+Session
+
+Class
+
+Meeting Dates
+
+Days and Times
+
+Room
+
+Instructor
+
+Seats
+
+1
+
+Open
+
+Regular Academic Session
+
+Lecture - Class 2051 -Section 1
+Laboratory - Class 2052 -Section 2
+
+04/05/2025 - 26/06/2025
+
+Tuesday
+12:00PM to 2:00PM
+Sunday
+12:00PM to 2:00PM
+Monday
+10:00AM to 1:00PM
+Wednesday
+10:00AM to 1:00PM
+
+10.2.2510.2.25
+10.2.2510.2.25
+
+Fathi AidarusFathi Aidarus
+Fathi AidarusFathi Aidarus
+
+Open Seats 15 of 24
+Open Seats 15 of 24
+
+
+2
+
+Open
+
+Regular Academic Session
+
+Lecture - Class 2053 -Section 3
+Laboratory - Class 2054 -Section 4
+
+04/05/2025 - 26/06/2025
+
+Tuesday
+8:00AM to 10:00AM
+Sunday
+8:00AM to 10:00AM
+Tuesday
+2:00PM to 5:00PM
+Sunday
+2:00PM to 5:00PM
+
+10.2.2510.2.25
+10.2.2510.2.25
+
+Fathi AidarusFathi Aidarus
+Fathi AidarusFathi Aidarus
+
+Open Seats 22 of 24
+Open Seats 22 of 24
+
+
+
+3
+
+Open
+
+Regular Academic Session
+
+Lecture - Class 2055 -Section 5
+Laboratory - Class 2056 -Section 6
+
+04/05/2025 - 26/06/2025
+
+Tuesday
+10:00AM to 12:00PM
+Sunday
+10:00AM to 12:00PM
+Monday
+2:00PM to 5:00PM
+Wednesday
+2:00PM to 5:00PM
+
+10.2.2510.2.25
+10.2.2510.2.25
+
+Claudia HaddadClaudia Haddad
+Claudia HaddadClaudia Haddad
+
+Open Seats 24 of 24
+Open Seats 24 of 24
+
+
+Cancel
+

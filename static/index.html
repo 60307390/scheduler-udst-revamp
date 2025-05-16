@@ -1,0 +1,67 @@
+<!DOCTYPE>
+<head>
+    <title>Class Scheduler</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+    <h1>Class Scheduler</h1>
+
+    <div class="main">
+
+        <div class="schedule-input-area">
+            <div class="input-heading">
+                <h3>Schedule Text</h3>
+                <p>Enter schedule text according to the instructions given in the GitHub.</p>
+            </div>
+            <br>
+            <div class="input-text-area">
+                <label for="scheduleText">Enter schedule text here:</label>
+                <textarea name="scheduleText" id="scheduleTextInput" cols="90" rows="20"></textarea>
+            </div>
+        </div>
+
+        <br>
+
+        <div class="schedule-buttons-container">
+            <button id="generateSchedule">Load Schedule</button>
+            <button id="clearButton">Clear Selections</button>
+            <button id="exampleData">Example Data</button>
+        </div>
+
+        <div class="course-picker-container">
+            
+        </div>
+
+        <div id="scheduleContainer">
+            <!-- <p id="scheduleDisplayTextTest1"></p>
+            <br>
+            <p id="scheduleDisplayTextTest"></p> -->
+            <div class="schedule-grid-container">
+                <div class="schedule-cell header">Time</div>
+                <div class="schedule-cell header">Sunday</div>
+                <div class="schedule-cell header">Monday</div>
+                <div class="schedule-cell header">Tuesday</div>
+                <div class="schedule-cell header">Wednesday</div>
+                <div class="schedule-cell header">Thursday</div>
+
+                <div class="time-column">
+                    <template id="timeSlotTemplate">
+                        <div class="schedule-cell time-slot"></div>
+                    </template>
+                </div>
+
+                <div class="day-column" data-day="Sunday"></div>
+                <div class="day-column" data-day="Monday"></div>
+                <div class="day-column" data-day="Tuesday"></div>
+                <div class="day-column" data-day="Wednesday"></div>
+                <div class="day-column" data-day="Thursday"></div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- <script type="module" src="./js/models.js"></script> -->
+    <!-- <script type="module" src="./js/core.js"></script> -->
+    <script type="module" src="./js/test.js"></script>
+</body>
+
