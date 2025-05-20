@@ -1,7 +1,7 @@
 export enum LectureType {
-    LECTURE = "Lecture",
-    LEC_THEATRE = "LecTheatre",
-    LABORATORY = "Laboratory"
+    Lecture = "Lecture",
+    LecTheatre = "LecTheatre",
+    Laboratory = "Laboratory"
 }
 
 export type StringDict = Record<string, any>;
@@ -136,7 +136,7 @@ export class CourseOptions {
 
 export class Schedule {
     constructor(
-        public selections: Map<Course, OptionSection>
+        public selections: Map<Course, OptionSection> = new Map<Course, OptionSection>
     ) { }
 
     addCourse(course: Course, option: OptionSection): void {

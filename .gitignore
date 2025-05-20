@@ -1,4 +1,4 @@
 node_modules/
 package-lock.json
-static/js/
-eslint.config.mjs
+unsued/
+dist/

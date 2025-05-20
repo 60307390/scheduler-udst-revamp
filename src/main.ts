@@ -1,32 +1,65 @@
-import { getAvailableCourseOptions, getCompatibleSchedules } from "./core";
-import { CourseOptions, Schedule } from "./models";
+import { getAvailableCourseOptions, getCompatibleSchedules, filterCourseOptions } from "./core.js";
+import { CoursePicker } from "./coursePicker.js";
+// import { Schedule, StringDict } from "./models.js";
+// import { CourseOptions, Schedule, StringDict } from "./models";
+import { ScheduleTable } from "./scheduleTable.js";
 
-let currentCourseSchedules: Schedule[];
+// TODO:
+// Come up with some way to avoid the global variables
+//
+// let currentCourseSchedules: Schedule[];
+// let allCourseOptions: CourseOptions[];
+// let selectedFilters: StringDict = {};
+// let courseButtons: CoursePicker;
+// let selectedCourseSchedules: Schedule = new Schedule();
 
-function generateSchedule(courseOptions: CourseOptions[]): Schedule[] {
-    const result = getCompatibleSchedules(courseOptions); 
-    enableButtonsPerSchedule(result);
-    return result;
-}
+// TODO
+// Fix
+
+let courseButtons: CoursePicker | undefined;
 
 function initialize(): void {
-    const scheduleDiv = document.getElementById("scheduleContainer")! as HTMLInputElement;
     let scheduleTextInput = document.getElementById("scheduleTextInput")! as HTMLInputElement;
-
     
+    const scheduleTable = ScheduleTable.getInstance();
+
     const allCourseOptions = getAvailableCourseOptions(scheduleTextInput.value);
+    
+    console.log(allCourseOptions);
 
-    clearScheduleTable();
+    scheduleTable.clear();
 
-    makeCourseButtons(allCourseOptions);
+    // const courseButtons = new CoursePicker(allCourseOptions, scheduleTable); (Try to avoid globals)
+    courseButtons = new CoursePicker(allCourseOptions, scheduleTable);
 
-    currentCourseSchedules = generateSchedule(allCourseOptions);
+    if (courseButtons) {
+        courseButtons.generateCourseButtons();
+        courseButtons.enableButtonsPerSchedule();
+    }
+
 }
 
-function clear(): void {}
+function clearAll(): void {
+    if (courseButtons) {
+        courseButtons.clearAll();
+    }
+}
 
 const clearButton = document.getElementById("clearButton")!;
-clearButton.addEventListener("click", clear);
+clearButton.addEventListener("click", clearAll);
 
 const generateScheduleButton = document.getElementById("generateSchedule")!;
 generateScheduleButton.addEventListener("click", initialize);
+// export { CoursePicker as CourseButtons };
+
+const exampleDataButton = document.getElementById("exampleData")!;
+exampleDataButton.addEventListener("click", function() {
+    const textFile = "/public/testSchedules.txt";
+    const scheduleTextInput = document.getElementById("scheduleTextInput")! as HTMLInputElement;
+    fetch(textFile) 
+    .then(r => r.text())
+    .then(text => {
+        scheduleTextInput.value = text;
+    })
+});
+

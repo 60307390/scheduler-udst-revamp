@@ -1,7 +1,7 @@
 <!DOCTYPE>
 <head>
     <title>Class Scheduler</title>
-    <link rel="stylesheet" href="./style.css">
+    <link rel="stylesheet" href="src/assets/style.css">
 </head>
 <body>
     <h1>Class Scheduler</h1>
@@ -28,9 +28,32 @@
             <button id="exampleData">Example Data</button>
         </div>
 
-        <div class="course-picker-container">
-            
-        </div>
+        <div class="course-interaction-container">
+            <div class="course-picker-container">
+                
+            </div>
+            <div class="course-preview">
+                <p class="preview-title">Preview</p>
+                <div class="preview-container">
+                    <p class="preview-course-title">DACS 2101</p>
+
+                    <table class="preview-table">
+                        <thead>
+                            <tr>
+                                <th>Section</th>
+                                <th>Room Number</th>
+                                <th>Timings</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                        </tbody>
+                        <tfoot>
+                        </tfoot>
+                    </table>
+
+                </div>
+            </div>
+        </div>      
 
         <div id="scheduleContainer">
             <!-- <p id="scheduleDisplayTextTest1"></p>
@@ -60,8 +83,6 @@
 
     </div>
 
-    <!-- <script type="module" src="./js/models.js"></script> -->
-    <!-- <script type="module" src="./js/core.js"></script> -->
-    <script type="module" src="./js/test.js"></script>
+    <script type="module" src="/src/main.ts"></script>
 </body>
 
