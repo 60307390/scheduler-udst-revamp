@@ -12,6 +12,7 @@ body {
     max-width: 1500px;
     margin: auto;
     font-size: 16px;
+    background-color: #fafafa;
 }
 
 h1 {
@@ -85,6 +86,13 @@ h1 {
     background-color: #286ecf;
 }
 
+/* Course Picker */
+.course-interaction-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    margin: 20px;
+}
+
 /* Options Selection Buttons */
 
 .course-title-container {
@@ -125,6 +133,52 @@ h1 {
         background-color: #286ecf;
     }
 }
+
+/* Course Preview */
+.course-preview {
+    background-color: #ffffff;
+    padding: 20px;
+}
+
+.course-preview p {
+    margin: 0px;
+    margin-bottom: 5px;
+}
+
+.preview-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.course-preview .preview-title {
+    font-weight: bold;
+    font-size: 20px;
+    text-align: center;
+}
+
+.course-preview .preview-course-title {
+    text-align: center;
+}
+
+/* Course Preview -- Preview Table */
+
+.preview-table {
+    align-self: center;
+    border-collapse: collapse;
+    width: 80%;
+}
+
+.preview-table th, td {
+    padding: 10px;
+    border: 1px solid black;
+    text-align: center;
+}
+
+.preview-table .preview-timings {
+    width: 40%;
+}
+
 
 /* Schedule Grid  */
 

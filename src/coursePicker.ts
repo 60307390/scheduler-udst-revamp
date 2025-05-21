@@ -177,6 +177,9 @@ export class CoursePicker {
             const sectionCell = tableRow.insertCell(-1);
             const roomNumberCell = tableRow.insertCell(-1);
             const timingsCell = tableRow.insertCell(-1);
+            sectionCell.className = "preview-section";
+            roomNumberCell.className = "preview-room-number";
+            timingsCell.className = "preview-timings";
             sectionCell.innerText = `${timeSlot.sectionNumber}`;
             roomNumberCell.innerText = `${timeSlot.roomNumber}`;
             timingsCell.innerText = `${timeTo12Hour(timeSlot.start)} - ${timeTo12Hour(timeSlot.end)}`;
