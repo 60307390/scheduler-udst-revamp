@@ -54,7 +54,7 @@ generateScheduleButton.addEventListener("click", initialize);
 
 const exampleDataButton = document.getElementById("exampleData")!;
 exampleDataButton.addEventListener("click", function() {
-    const textFile = "/public/testSchedules.txt";
+    const textFile = "testSchedules.txt";
     const scheduleTextInput = document.getElementById("scheduleTextInput")! as HTMLInputElement;
     fetch(textFile) 
     .then(r => r.text())
