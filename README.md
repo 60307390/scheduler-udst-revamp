@@ -2,7 +2,9 @@
 
 Schedule calculator and visualizer for UDST PeopleSoft classes. Improvized version of previous iteration, now exclusively in a web interface.
 
-## How to use
+## How to run
+
+- Prerequisites: `npm`.
 
 - Install packages
 ```bash
@@ -14,7 +16,12 @@ npm install
 npm run build && npm start
 ```
 
-### How do I use the program itself?
+- For development purposes (with live preview)
+```bash
+npm run dev
+```
+
+## How do I use the app itself?
 
 VIDEO DEMO COMING SOON (whenever enrollment period for next sem.)
 
@@ -84,4 +91,5 @@ Class Selection
 
  - Exclude a course that you don't want, which will calculate schedules without considering that course (like if wasn't entered at all).
  ![3-exclude-course.png](demo/images/3-exclude-course.png)
+
  - Play around with the selections to visualize schedules.
