@@ -2,18 +2,8 @@ import { getAvailableCourseOptions } from "./core.js";
 import { CoursePicker } from "./coursePicker.js";
 import { ScheduleTable } from "./scheduleTable.js";
 
-// TODO:
-// Come up with some way to avoid the global variables
-//
-// let currentCourseSchedules: Schedule[];
-// let allCourseOptions: CourseOptions[];
-// let selectedFilters: StringDict = {};
-// let courseButtons: CoursePicker;
-// let selectedCourseSchedules: Schedule = new Schedule();
-
 // TODO
 // Fix
-
 let courseButtons: CoursePicker | undefined;
 
 function initialize(): void {
