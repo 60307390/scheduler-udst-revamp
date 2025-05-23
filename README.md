@@ -16,7 +16,7 @@ npm run build && npm start
 
 ### How do I use the program itself?
 
-VIDEO DEMO COMING SOON (when enrollment option opens)
+VIDEO DEMO COMING SOON (whenever enrollment period for next sem.)
 
 
 - In PeopleSoft, go to the Enrollment page for classes.
