@@ -1,5 +1,8 @@
 import { Course, LectureType, OptionSection, Schedule } from "./models.js";
 
+// TODO:
+// Export as PNG/JPEG/Clipboard
+
 export class ScheduleTable {
     public selectedSchedules: Schedule;
     private static instance: ScheduleTable;
