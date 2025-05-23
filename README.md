@@ -77,6 +77,11 @@ Class Selection
 ```
 
  - Hover over the *option buttons* to preview the sections, room numbers, timings of that option. An **option** refers to the course's option you see in PeopleSoft enrollment page.
+ ![1-hover-option.png](demo/images/1-hover-option.png)
+
  - Select an option by clicking on it. This will add it to the schedule and will also filter out conflicting options in other courses.
+ ![2-select-option.png](demo/images/2-select-option.png)
+
  - Exclude a course that you don't want, which will calculate schedules without considering that course (like if wasn't entered at all).
+ ![3-exclude-course.png](demo/images/3-exclude-course.png)
  - Play around with the selections to visualize schedules.
