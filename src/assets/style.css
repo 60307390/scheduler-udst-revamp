@@ -7,6 +7,18 @@ TODO:
     - Also maybe enable support for smaller devices
 */
 
+:root {
+    --main-accent: #368aff;
+    --secondary-accent: #286ecf;
+
+    --cell-color-1: #e3f2fd;
+    --cell-color-2: #ffbdbd;
+    --cell-color-3: #dff4f0;
+    --cell-color-4: #e2c0ff;
+    --cell-color-5: #ffecc0;
+    --cell-color-6: #ffe7fe;
+}
+
 body {
     width: 80%;
     max-width: 1500px;
@@ -73,7 +85,7 @@ h1 {
 }
 
 .schedule-buttons-container button {
-    background-color: #368aff;
+    background-color: var(--main-accent);
     color: white;
     font-size: 16px;
     padding: 10px 20px;
@@ -83,13 +95,14 @@ h1 {
 }
 
 .schedule-buttons-container button:hover {
-    background-color: #286ecf;
+    background-color: var(--secondary-accent);
 }
 
 /* Course Picker */
 .course-interaction-container {
     display: grid;
-    grid-template-columns: 1fr 1fr;
+    grid-template-columns: repeat(auto-fit, minmax(500px, 1fr));
+    gap: 20px;
     margin: 20px;
 }
 
@@ -100,11 +113,13 @@ h1 {
     gap: 10px;
 }
 
-.options-grid button {
+.options-grid .option-button {
     background-color: #e9e9e9;
     color: black;
     font-size: 16px;
     padding: 5px 10px;
+    /* width: 35px; */
+    /* height: 35px; */
     border: #cbcbcb 2px solid;
     gap: 0px;
     cursor: pointer;
@@ -114,7 +129,7 @@ h1 {
     }
 }
 
-.options-grid button:disabled {
+.options-grid .option-button:disabled {
     background-color: #c3c3c3;
     color: black;
     font-size: 16px;
@@ -125,19 +140,19 @@ h1 {
 }
 
 .options-grid .selected-button {
-    background-color: #368aff;
+    background-color: var(--main-accent);
     border: #549bff 2px solid;
     color: white;
 
     &:not(:disabled):hover {
-        background-color: #286ecf;
+        background-color: var(--secondary-accent);
     }
 }
 
 /* Course Preview */
 .course-preview {
     background-color: #ffffff;
-    padding: 20px;
+    padding: 20px 15px;
 }
 
 .course-preview p {
@@ -197,6 +212,10 @@ h1 {
     padding: 4px;
     border-bottom: 1px solid lightgray;
     border-right: 1px solid lightgray;
+    height: 30px;
+
+    text-align: center;
+    align-content: center;
 }
 
 

@@ -1,7 +1,5 @@
-import { getAvailableCourseOptions, getCompatibleSchedules, filterCourseOptions } from "./core.js";
+import { getAvailableCourseOptions } from "./core.js";
 import { CoursePicker } from "./coursePicker.js";
-// import { Schedule, StringDict } from "./models.js";
-// import { CourseOptions, Schedule, StringDict } from "./models";
 import { ScheduleTable } from "./scheduleTable.js";
 
 // TODO:
@@ -20,11 +18,11 @@ let courseButtons: CoursePicker | undefined;
 
 function initialize(): void {
     let scheduleTextInput = document.getElementById("scheduleTextInput")! as HTMLInputElement;
-    
+
     const scheduleTable = ScheduleTable.getInstance();
 
     const allCourseOptions = getAvailableCourseOptions(scheduleTextInput.value);
-    
+
     console.log(allCourseOptions);
 
     scheduleTable.clear();
@@ -56,10 +54,10 @@ const exampleDataButton = document.getElementById("exampleData")!;
 exampleDataButton.addEventListener("click", function() {
     const textFile = "testSchedules.txt";
     const scheduleTextInput = document.getElementById("scheduleTextInput")! as HTMLInputElement;
-    fetch(textFile) 
-    .then(r => r.text())
-    .then(text => {
-        scheduleTextInput.value = text;
-    })
+    fetch(textFile)
+        .then(r => r.text())
+        .then(text => {
+            scheduleTextInput.value = text;
+        })
 });
 

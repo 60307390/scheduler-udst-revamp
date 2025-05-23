@@ -1,4 +1,4 @@
-import { Course, LectureType, OptionSection, Schedule, Section } from "./models.js";
+import { Course, LectureType, OptionSection, Schedule } from "./models.js";
 
 export class ScheduleTable {
     public selectedSchedules: Schedule;
@@ -46,7 +46,7 @@ export class ScheduleTable {
         }
     }
 
-    addCourse(course: Course, option: OptionSection): void {
+    addCourse(course: Course, option: OptionSection, color: string): void {
         const section = option.section;
         const rowHeight = document.querySelector(".schedule-cell")!.getBoundingClientRect().height;
         console.log(rowHeight);
@@ -89,6 +89,7 @@ export class ScheduleTable {
             classSlot.className = "class-cell";
             classSlot.style.top = `${topPos}px`;
             classSlot.style.height = `${height}px`;
+            classSlot.style.backgroundColor = color;
 
             const className = document.createElement("p");
             className.textContent = `${course.code} - ${timeSlot.sectionNumber}`
@@ -116,10 +117,10 @@ export class ScheduleTable {
 
 
     removeCourse(courseCode: string): void {
-        const selecetedScheduleEntries = this.selectedSchedules.selections.entries();
-        const selectedCourse = selecetedScheduleEntries.find( ([course, _]) => course.code === courseCode);
+        const selectedScheduleEntries = Array.from(this.selectedSchedules.selections.entries());
+        const selectedCourse = selectedScheduleEntries.find(([course, _]) => course.code === courseCode);
 
-        if (!selectedCourse) 
+        if (!selectedCourse)
             return;
 
         this.selectedSchedules.selections.delete(selectedCourse[0]);
@@ -137,10 +138,10 @@ export class ScheduleTable {
             // for (let classCell of dayColumn.children) {
             //     const classCellName = classCell.querySelector(".class-name")!;
             //     if (classCellName.textContent!.startsWith(courseCode)) {
-                // let currentClassCell = classCell as HTMLElement;
-                // if (currentClassCell.innerText!.startsWith(courseCode)) {
-                //     classCell.remove();
-                // }
+            // let currentClassCell = classCell as HTMLElement;
+            // if (currentClassCell.innerText!.startsWith(courseCode)) {
+            //     classCell.remove();
+            // }
             // }
         }
     }
@@ -148,9 +149,9 @@ export class ScheduleTable {
     clear(): void {
         this.selectedSchedules.selections.clear();
         const dayColumns = document.querySelectorAll(".day-column");
-            for (let i = 0; i < dayColumns.length; i++) {
-                dayColumns[i].innerHTML = "";
-            }
+        for (let i = 0; i < dayColumns.length; i++) {
+            dayColumns[i].innerHTML = "";
+        }
     }
 
 }

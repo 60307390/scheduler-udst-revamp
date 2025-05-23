@@ -1,31 +1,72 @@
 import { LectureType, TimeSlot, Section, OptionSection, Course, CourseOptions, Schedule, StringDict } from "./models.js";
 
-function cartesianProduct<T>(...allEntries: T[][]): T[][] {
-    return allEntries.reduce<T[][]>(
-        (results, entries) =>
-            results
-                .map(result => entries.map(entry => [...result, entry]))
-                .reduce((subResults, result) => [...subResults, ...result], []),
-        [[]]
-    )
-}
+// DEPRECATED FUNCTIONS
+//
+// function cartesianProduct<T>(...allEntries: T[][]): T[][] {
+//     return allEntries.reduce<T[][]>(
+//         (results, entries) =>
+//             results
+//                 .map(result => entries.map(entry => [...result, entry]))
+//                 .reduce((subResults, result) => [...subResults, ...result], []),
+//         [[]]
+//     )
+// }
+//
+// export function getCompatibleSchedules(courseOptionList: Array<CourseOptions>): Array<Schedule> {
+//     const courseList = courseOptionList.map((courseOption) => courseOption.course);
+//     const allOptionsList = courseOptionList.map((courseOption) => courseOption.options);
+//
+//     const optionsCombinations = cartesianProduct(...allOptionsList);
+//
+//     let compatibleSchedules = [];
+//     for (let optionComb of optionsCombinations) {
+//         const scheduleMap = new Map();
+//         courseList.forEach((course, i) => scheduleMap.set(course, optionComb[i]));
+//         const schedule = new Schedule(scheduleMap);
+//         if (!schedule.hasConflicts()) {
+//             compatibleSchedules.push(schedule);
+//         }
+//     }
+//     return compatibleSchedules;
+// }
 
 export function getCompatibleSchedules(courseOptionList: Array<CourseOptions>): Array<Schedule> {
-    const courseList = courseOptionList.map((courseOption) => courseOption.course);
-    const allOptionsList = courseOptionList.map((courseOption) => courseOption.options);
+    const courseList = courseOptionList.map(courseOption => courseOption.course);
+    const allOptions = courseOptionList.map(courseOption => courseOption.options);
 
-    const optionsCombinations = cartesianProduct(...allOptionsList);
+    const compatible: Schedule[] = [];
 
-    let compatibleSchedules = [];
-    for (let optionComb of optionsCombinations) {
-        const scheduleMap = new Map();
-        courseList.forEach((course, i) => scheduleMap.set(course, optionComb[i]));
-        const schedule = new Schedule(scheduleMap);
-        if (!schedule.hasConflicts()) {
-            compatibleSchedules.push(schedule);
+    function hasConflictWithSelection(option: OptionSection, otherOptions: OptionSection[]) {
+        return otherOptions.some(otherOption => {
+            const allTimeSlots = option.section.timeSlots.concat(otherOption.section.timeSlots);
+            for (let i = 0; i < allTimeSlots.length; i++) {
+                for (let j = i + 1; j < allTimeSlots.length; j++) {
+                    if (allTimeSlots[i].overlapsWith(allTimeSlots[j])) {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        });
+    }
+
+    // Recursive backtracking with conflict checking (basically optimized cartesian product)
+    function generateCombinations(index: number, currentSelection: OptionSection[]) {
+        if (index === courseList.length) {
+            compatible.push(new Schedule(new Map(courseList.map((c, i) => [c, currentSelection[i]]))));
+            return;
+        }
+
+        for (const option of allOptions[index]) {
+            // Check conflict with already selected options
+            if (!hasConflictWithSelection(option, currentSelection)) {
+                generateCombinations(index + 1, [...currentSelection, option]);
+            }
         }
     }
-    return compatibleSchedules;
+
+    generateCombinations(0, []);
+    return compatible;
 }
 
 export function filterCourseOptions(courseOptions: Array<CourseOptions>, optionFilter: StringDict): Array<CourseOptions> {

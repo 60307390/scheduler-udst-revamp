@@ -1,6 +1,12 @@
 import { filterCourseOptions, getCompatibleSchedules } from "./core.js";
-import { Course, CourseOptions, OptionSection, Schedule, StringDict } from "./models.js";
+import { CourseOptions, Schedule, StringDict } from "./models.js";
 import { ScheduleTable } from "./scheduleTable.js";
+
+// TODO 
+// Nice-to-haves / QoL
+// Add function to exclude an option on right-click
+// Highlight the course options that will be excluded/conflict with course option on hover (?)
+
 
 export class CoursePicker {
     // public courseButtonsContainer: HTMLElement;
@@ -22,14 +28,10 @@ export class CoursePicker {
     updateFilteredCourseOptions(): void {
         this.filteredCourseOptions = filterCourseOptions(this.courseOptionData, this.selectedFilters);
     }
-    
+
     getCurrentCourseSchedules(): Schedule[] {
         return getCompatibleSchedules(this.filteredCourseOptions);
     }
-
-    // initializeCoursePreview(): void {
-    //
-    // }
 
     generateCourseButtons(): void {
         const courseButtonsContainer = document.querySelector(".course-picker-container")!;
@@ -71,17 +73,23 @@ export class CoursePicker {
                 button.dataset.optionNumber = option.id;
                 button.disabled = true;
 
-                const buttonClickFunction = this.selectCourseOption;
+                const leftClickFunction = this.selectCourseOption;
                 const coursePickerObject = this;
                 button.addEventListener("click", function() {
-                    buttonClickFunction(this, coursePickerObject);
+                    leftClickFunction(this, coursePickerObject);
                 });
 
-                const buttonHoverFunction = this.showCoursePreview;
-                button.addEventListener("mouseover", function() {
-                    buttonHoverFunction(this, coursePickerObject);
+                // TODO: Add function to exclude an option
+                const rightClickFunction = () => (null);
+                button.addEventListener("contextmenu", (event) => {
+                    event.preventDefault();
+                    rightClickFunction()
                 })
-                // button.addEventListener("click", buttonFunction);
+
+                const hoverFunction = this.showCoursePreview;
+                button.addEventListener("mouseover", function() {
+                    hoverFunction(this, coursePickerObject);
+                })
 
                 optionsGrid.appendChild(button);
             });
@@ -99,6 +107,9 @@ export class CoursePicker {
         const optionNumberBtn = button.dataset.optionNumber!;
         const courseOptionData = coursePickerObject.courseOptionData;
 
+        const style = window.getComputedStyle(document.body);
+
+        // TODO: Redesign if want exclusion feature
         coursePickerObject.selectedFilters[courseCodeBtn] = [optionNumberBtn, optionNumberBtn];
 
         coursePickerObject.filteredCourseOptions = filterCourseOptions(courseOptionData, coursePickerObject.selectedFilters);
@@ -114,7 +125,9 @@ export class CoursePicker {
         })!;
         const course = courseOption.course;
         const option = courseOption.options.find(option => option.id === optionNumberBtn)!;
-        coursePickerObject.scheduleTable.addCourse(course, option);
+        const courseIndex = courseOptionData.findIndex((courseOption) => courseOption.course.code === courseCodeBtn);
+        const color = style.getPropertyValue(`--cell-color-${courseIndex + 1}`);
+        coursePickerObject.scheduleTable.addCourse(course, option, color);
 
         coursePickerObject.enableButtonsPerSchedule();
     }
@@ -123,7 +136,7 @@ export class CoursePicker {
         const courseCode = checkbox.dataset.courseCode!;
         const allOptionsGrid = document.querySelectorAll<HTMLElement>(".options-grid");
         // const courseOptionGrid = Array.from(allOptionsGrid).find(optGrid => optGrid.children[0].dataset.courseCode === courseCode);
-        const courseOptionGrid = allOptionsGrid.values().find(x => x.dataset.courseCode === courseCode)!;
+        const courseOptionGrid = Array.from(allOptionsGrid.values()).find((x: HTMLElement) => x.dataset.courseCode === courseCode)!;
         coursePickerObject.disableAllButtons();
 
         if (checkbox.checked === true) {
@@ -133,7 +146,7 @@ export class CoursePicker {
                 optionButton.classList.remove("selected-button");
             }
             coursePickerObject.selectedFilters[courseCode] = [-1, -1];
-            coursePickerObject.scheduleTable.removeCourse(courseCode); 
+            coursePickerObject.scheduleTable.removeCourse(courseCode);
         }
         coursePickerObject.filteredCourseOptions = filterCourseOptions(coursePickerObject.courseOptionData, coursePickerObject.selectedFilters);
 
@@ -174,14 +187,23 @@ export class CoursePicker {
 
         option.section.timeSlots.forEach(timeSlot => {
             const tableRow = table.insertRow(-1);
+
             const sectionCell = tableRow.insertCell(-1);
             const roomNumberCell = tableRow.insertCell(-1);
+            const lectureTypeCell = tableRow.insertCell(-1);
+            const dayCell = tableRow.insertCell(-1);
             const timingsCell = tableRow.insertCell(-1);
+
             sectionCell.className = "preview-section";
             roomNumberCell.className = "preview-room-number";
+            lectureTypeCell.className = "preview-lecture-type";
+            dayCell.className = "preview-day";
             timingsCell.className = "preview-timings";
+
             sectionCell.innerText = `${timeSlot.sectionNumber}`;
             roomNumberCell.innerText = `${timeSlot.roomNumber}`;
+            lectureTypeCell.innerText = `${timeSlot.lectureType.valueOf()}`
+            dayCell.innerText = `${timeSlot.day.substring(0, 3)}`
             timingsCell.innerText = `${timeTo12Hour(timeSlot.start)} - ${timeTo12Hour(timeSlot.end)}`;
         })
     }
@@ -200,10 +222,11 @@ export class CoursePicker {
 
     enableButtonsPerSchedule(): void {
         const allButtons = document.querySelectorAll<HTMLButtonElement>(".option-button");
+
         let currentCourseSchedules = this.getCurrentCourseSchedules();
 
         currentCourseSchedules.forEach(schedule => {
-            schedule.selections.entries().forEach(([course, option]) => {
+            Array.from(schedule.selections.entries()).forEach(([course, option]) => {
                 const courseCode = course.code;
                 const optionNumber = option.id;
                 for (let optionButton of allButtons) {
