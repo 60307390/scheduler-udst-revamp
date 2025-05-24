@@ -181,7 +181,7 @@ h1 {
 .preview-table {
     align-self: center;
     border-collapse: collapse;
-    width: 80%;
+    width: 100%;
 }
 
 .preview-table th, td {
