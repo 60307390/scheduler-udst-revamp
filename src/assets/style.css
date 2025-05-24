@@ -222,7 +222,8 @@ h1 {
 /* Class Slots */
 .class-cell {
     position: absolute;
-    background: #e3f2fd;
+    /* background: #e3f2fd; */
+    background: var(--cell-color-1);
     padding: 4px;
     overflow: hidden;
     border: 1px solid #90caf9;
