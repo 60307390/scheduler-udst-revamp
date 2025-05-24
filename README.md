@@ -21,7 +21,7 @@ npm run build && npm start
 npm run dev
 ```
 
-## How do I use the app
+## How to use the app
 
 VIDEO DEMO COMING SOON (whenever enrollment period for next sem.)
 
