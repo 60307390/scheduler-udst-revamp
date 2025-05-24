@@ -2,7 +2,7 @@
 
 Schedule calculator and visualizer for UDST PeopleSoft classes. Improvized version of previous iteration, now exclusively in a web interface.
 
-## How to run
+## How to run the app
 
 - Prerequisites: `npm`.
 
@@ -21,7 +21,7 @@ npm run build && npm start
 npm run dev
 ```
 
-## How do I use the app itself?
+## How do I use the app
 
 VIDEO DEMO COMING SOON (whenever enrollment period for next sem.)
 
