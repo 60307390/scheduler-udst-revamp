@@ -19,6 +19,13 @@ TODO:
     --cell-color-6: #ffe7fe;
 }
 
+.inter-font {
+  font-family: "Inter", sans-serif;
+  font-optical-sizing: auto;
+  font-weight: 400;
+  font-style: normal;
+}
+
 body {
     width: 80%;
     max-width: 1500px;
