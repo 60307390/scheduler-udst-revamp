@@ -37,6 +37,8 @@ export class ScheduleTable {
 
         for (let hour = 8; hour <= 20; hour++) {
             for (let minute = 0; minute < 60; minute += 30) {
+                if (hour == 20 && minute == 30)
+                    continue;
                 const row = document.createElement("div");
                 row.className = "grid-row";
 
@@ -52,7 +54,7 @@ export class ScheduleTable {
     addCourse(course: Course, option: OptionSection, color: string): void {
         const section = option.section;
         const rowHeight = document.querySelector(".schedule-cell")!.getBoundingClientRect().height;
-        console.log(rowHeight);
+        // console.log(rowHeight);
 
         let timeStrToInt = function(timeStr: string) {
             const hour = parseInt(timeStr.split(":")[0]);
@@ -115,7 +117,11 @@ export class ScheduleTable {
             dayColumn.appendChild(classSlot);
         });
 
-        this.selectedSchedules.addCourse(course, option);
+        try {
+            this.selectedSchedules.addCourse(course, option);
+        } catch (Error) {
+            console.log("Could not add schedule to the table");
+        }
     }
 
 

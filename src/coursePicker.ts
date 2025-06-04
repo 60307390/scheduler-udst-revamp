@@ -177,7 +177,7 @@ export class CoursePicker {
         }
 
         const previewHeading = document.querySelector(".preview-course-title")! as HTMLElement;
-        previewHeading.innerText = `${course.code} - ${course.name} - ${option.id}`;
+        previewHeading.innerText = `${course.code} - ${course.name} - Option ${option.id}`;
 
         const table = document.querySelector(".preview-table")! as HTMLTableElement;
 
