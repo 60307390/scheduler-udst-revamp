@@ -26,8 +26,8 @@ npm run dev
 VIDEO DEMO COMING SOON (whenever enrollment period for next sem.)
 
 
-- In PeopleSoft, go to the Enrollment page for classes.
-- Then, select the class that you want to put in the schedule.
+- In PeopleSoft, go to the Enrollment page for classes (Manage Classes > Enrol).
+- Then, select the class that you want to put in the schedule using "Select Class" button.
 - Copy the entire page (Ctrl + A).
 - Paste the text into the *text input box* on the website. Will look something like:
 
@@ -83,13 +83,13 @@ Class Selection
 ...
 ```
 
- - Hover over the *option buttons* to preview the sections, room numbers, timings of that option. An **option** refers to the course's option you see in PeopleSoft enrollment page.
+ - Hover over the *option buttons* to preview the sections, room numbers, timings of that option. An **option** refers to the course's option you see in PeopleSoft course information page.
  ![1-hover-option.png](demo/images/1-hover-option.png)
 
- - Select an option by clicking on it. This will add it to the schedule and will also filter out conflicting options in other courses.
+ - Select an option by clicking on it. This will add it to the schedule and will also *filter out* conflicting options in other courses.
  ![2-select-option.png](demo/images/2-select-option.png)
 
- - Exclude a course that you don't want, which will calculate schedules without considering that course (like if wasn't entered at all).
+ - Exclude a course by unchecking the checkbox. This will calculate schedules without considering that course (like if wasn't entered at all).
  ![3-exclude-course.png](demo/images/3-exclude-course.png)
 
  - Play around with the selections to visualize schedules.
