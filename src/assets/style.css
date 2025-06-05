@@ -268,7 +268,7 @@ a:visited:hover  {
 .preview-table th,
 td {
     padding: 10px;
-    border: 1px solid black;
+    border: 1px solid lightgray;
     text-align: center;
 }
 
