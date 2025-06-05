@@ -1,10 +1,8 @@
-
-
 /* 
 TODO:
 
 - Fix "class slot" styling
-    - Also maybe enable support for smaller devices
+    - Enable support for smaller devices
 */
 
 :root {
@@ -21,26 +19,27 @@ TODO:
     --cell-color-6: #ffe7fe;
 }
 
-.inter-font {
-  font-family: "Inter", sans-serif;
-  font-optical-sizing: auto;
-  font-weight: 400;
-  font-style: normal;
+.inter-font,
+.button-font {
+    font-family: "Inter", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
 }
 
 /* WORK SANS */
-/* .work-sans-font { */
-/*   font-family: "Work Sans", sans-serif; */
-/*   font-optical-sizing: auto; */
-/*   font-weight: 400; */
-/*   font-style: normal; */
-/* } */
+.work-sans-font {
+    font-family: "Work Sans", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+}
 
 .roboto-mono-code-font {
-  font-family: "Roboto Mono", monospace;
-  font-optical-sizing: auto;
-  font-weight: 400;
-  font-style: normal;
+    font-family: "Roboto Mono", monospace;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
 }
 
 body {
@@ -50,16 +49,34 @@ body {
     font-size: 16px;
     /* background-color: #fafafa; */
     background-color: #f5f7fa;
+    color: #222222;
+}
+
+header {
+    background-color: var(--main-accent);
+    margin-bottom: 30px;
+    padding: 10px;
 }
 
 h1 {
     margin: auto;
     text-align: center;
-    margin-bottom: 30px;
     color: white;
-    background-color: var(--main-accent);
     font-weight: 600;
-    padding: 10px;
+}
+
+a, a:visited { 
+    /* color: #3aa3ff; */
+    color: var(--main-accent);
+}
+/* a:visited { */
+/*     color: #933aff; */
+/* } */
+a:hover {
+    color: #51aeff;
+}
+a:visited:hover  {
+    color: #51aeff;
 }
 
 .main {
@@ -106,7 +123,7 @@ h1 {
 }
 
 .input-text-area textarea {
-    font-size: 13px;
+    font-size: 16px;
     height: 400px;
     width: 100%;
     resize: none;
@@ -137,6 +154,12 @@ h1 {
     background-color: var(--secondary-accent);
 }
 
+/* Inner Titles General Styling */
+.inner-title {
+    font-weight: bold;
+    font-size: 20px;
+}
+
 /* Course Picker */
 .course-interaction-container {
     display: grid;
@@ -147,11 +170,23 @@ h1 {
 
 /* Options Selection Buttons */
 
+.course-picker-container {
+    display: flex;
+    flex-direction: column;
+    padding: 20px 15px;
+    gap: 2px;
+}
+
+.course-picker-container>.course-picker-title {
+    margin: 0px;
+}
+
 .course-container {
-    /* display: flex; */
-    /* flex-direction: column; */
+    display: flex;
+    flex-direction: column;
     margin-bottom: 5px;
 }
+
 .course-title-container {
     display: flex;
     gap: 10px;
@@ -162,14 +197,14 @@ h1 {
     background-color: #e9e9e9;
     color: black;
     font-size: 16px;
-    padding: 5px 10px;
-    /* width: 35px; */
-    /* height: 35px; */
+    /* padding: 5px 10px; */
+    width: 33px;
+    height: 32px;
     border: #cbcbcb 2px solid;
     gap: 0px;
     cursor: pointer;
-    
-    &:not(:disabled):hover{
+
+    &:not(:disabled):hover {
         background-color: #dedede;
     }
 }
@@ -212,8 +247,6 @@ h1 {
 }
 
 .course-preview .preview-title {
-    font-weight: bold;
-    font-size: 20px;
     text-align: center;
 }
 
@@ -225,13 +258,15 @@ h1 {
 
 .preview-table {
     background-color: white;
-    border: 2px solid var(--main-accent);
+    /* border: 2px solid var(--main-accent); */
+    border: 2px solid lightgray;
     align-self: center;
     border-collapse: collapse;
     width: 100%;
 }
 
-.preview-table th, td {
+.preview-table th,
+td {
     padding: 10px;
     border: 1px solid black;
     text-align: center;
@@ -244,8 +279,13 @@ h1 {
 
 /* Schedule Grid  */
 
+.schedule-grid-title {
+    text-align: center;
+}
+
 .schedule-grid-container {
     background-color: white;
+    border: 1px solid lightgray;
     display: grid;
     grid-template-columns: 100px repeat(5, 1fr);
 }
@@ -303,6 +343,29 @@ h1 {
     font-size: 16px;
 }
 
-.class-cell .class-details, .class-time {
+.class-cell .class-details,
+.class-time {
     font-size: 12px;
 }
+
+/* Footer */
+footer {
+    /* background-color: #e3e3e3; */
+
+    /* LIGHT */
+    /* background-color: #EAEDF1; PREFERRED */
+    /* background-color: #D1D6DC; */
+    border-top: 1px solid #D1D6DC;
+    background-color: #EAEDF1;
+
+    margin-top: 40px;
+    padding: 20px 40px;
+}
+
+footer p {
+    margin: 0;
+}
+
+/* footer a, footer a:visited { */
+/*     color: var(--main-accent); */
+/* } */

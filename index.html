@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <head>
     <title>Class Scheduler</title>
     <link rel="stylesheet" href="src/assets/style.css">
@@ -6,44 +7,52 @@
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap"
+        rel="stylesheet">
     <!-- WORK SANS FONT -->
-    <!-- <link href="https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet"> -->
+    <link href="https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap"
+        rel="stylesheet">
     <!-- ROBOTO MONO -->
-    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap"
+        rel="stylesheet">
 </head>
+
 <body class="inter-font">
-    <h1>PeopleSoft Class Scheduler</h1>
+    <header>
+        <h1>Class Scheduler for PeopleSoft</h1>
+    </header>
 
-    <div class="main">
+    <section class="main">
 
-        <div class="schedule-input-area">
+        <section class="schedule-input-area">
             <div class="input-heading">
-                <h3>Schedule Text</h3>
-                <p>Enter schedule text according to the instructions given in the <a href="https://github.com/60307390/scheduler-udst-v2/tree/main">GitHub</a>.</p>
+                <h3>Schedule Text Input</h3>
+                <p>Enter schedule text according to the instructions given in the <a
+                        href="https://github.com/60307390/scheduler-udst-v2/tree/main" target="_blank">GitHub</a>.</p>
             </div>
             <br>
             <div class="input-text-area">
                 <label for="scheduleText">Enter schedule text here:</label>
                 <!-- <textarea class="roboto-mono-code-font" name="scheduleText" id="scheduleTextInput" cols="90" rows="20"></textarea> -->
-                <textarea class="roboto-mono-code-font" name="scheduleText" id="scheduleTextInput"></textarea>
+                <textarea class="work-sans-font" name="scheduleText" id="scheduleTextInput"></textarea>
             </div>
-        </div>
+        </section>
 
         <br>
 
         <div class="schedule-buttons-container">
-            <button id="generateSchedule">Load Schedule</button>
-            <button id="clearButton">Clear Selections</button>
-            <button id="exampleData">Example Data</button>
+            <button class="button-font" id="generateSchedule">Load Schedule</button>
+            <button class="button-font" id="clearButton">Clear Selections</button>
+            <button class="button-font" id="exampleData">Example Data</button>
         </div>
 
-        <div class="course-interaction-container">
+        <section class="course-interaction-container">
             <div class="course-picker-container">
-                
+
             </div>
             <div class="course-preview">
-                <p class="preview-title">Preview</p>
+                <p class="preview-title inner-title">Preview</p>
                 <div class="preview-container">
                     <p class="preview-course-title"></p>
 
@@ -65,12 +74,13 @@
 
                 </div>
             </div>
-        </div>      
+        </section>
 
-        <div id="scheduleContainer">
+        <section id="scheduleContainer">
             <!-- <p id="scheduleDisplayTextTest1"></p>
             <br>
             <p id="scheduleDisplayTextTest"></p> -->
+            <p class="schedule-grid-title inner-title">Schedule Grid</p>
             <div class="schedule-grid-container">
                 <div class="schedule-cell header">Time</div>
                 <div class="schedule-cell header">Sunday</div>
@@ -91,10 +101,17 @@
                 <div class="day-column" data-day="Wednesday"></div>
                 <div class="day-column" data-day="Thursday"></div>
             </div>
-        </div>
+        </section>
 
-    </div>
+    </section>
+
+
+    <footer>
+        <div class="main-text">
+            <p>Star this project and check out my other projects on <a
+                    href="https://github.com/60307390/scheduler-udst-v2/tree/main" target="_blank">GitHub</a>.</p>
+        </div>
+    </footer>
 
     <script type="module" src="/src/main.ts"></script>
 </body>
-

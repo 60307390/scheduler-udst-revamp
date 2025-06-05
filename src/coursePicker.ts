@@ -35,7 +35,7 @@ export class CoursePicker {
 
     generateCourseButtons(): void {
         const courseButtonsContainer = document.querySelector(".course-picker-container")!;
-        courseButtonsContainer.innerHTML = "";
+        courseButtonsContainer.innerHTML = "<p class=\"course-picker-title inner-title\">Select Courses</p>";
 
         this.courseOptionData.forEach(courseOption => {
             const courseDetails = courseOption.course;
@@ -66,7 +66,7 @@ export class CoursePicker {
 
             courseOption.options.forEach(option => {
                 const button = document.createElement("button");
-                button.className = `option-button`;
+                button.className = `option-button button-font`;
                 button.textContent = `${option.id}`;
 
                 button.dataset.courseCode = courseDetails.code;
