@@ -134,13 +134,7 @@ a:visited:hover  {
 }
 
 /* Schedule Generating Buttons */
-.schedule-buttons-container {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-}
-
-.schedule-buttons-container button {
+.main-function-button {
     background-color: var(--main-accent);
     color: white;
     font-size: 16px;
@@ -150,9 +144,29 @@ a:visited:hover  {
     cursor: pointer;
 }
 
-.schedule-buttons-container button:hover {
+.main-function-button:hover {
     background-color: var(--secondary-accent);
 }
+
+.schedule-buttons-container {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+}
+
+/* .schedule-buttons-container button { */
+/*     background-color: var(--main-accent); */
+/*     color: white; */
+/*     font-size: 16px; */
+/*     padding: 10px 20px; */
+/*     border-radius: 2px; */
+/*     border: #549bff 2px solid; */
+/*     cursor: pointer; */
+/* } */
+/**/
+/* .schedule-buttons-container button:hover { */
+/*     background-color: var(--secondary-accent); */
+/* } */
 
 /* Inner Titles General Styling */
 .inner-title {
@@ -278,9 +292,18 @@ td {
 
 
 /* Schedule Grid  */
+.schedule-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
 
 .schedule-grid-title {
     text-align: center;
+}
+
+.print-button-container {
+    display: block;
 }
 
 .schedule-grid-container {

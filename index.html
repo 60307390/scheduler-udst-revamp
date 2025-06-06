@@ -2,6 +2,7 @@
 
 <head>
     <title>Class Scheduler</title>
+    <meta name="description" content="Unofficial UDST scheduling tool for class enrollment">
     <link rel="stylesheet" href="src/assets/style.css">
     <link rel="icon" type="image/x-icon" href="/assets/favicon.svg">
 
@@ -20,7 +21,7 @@
 
 <body class="inter-font">
     <header>
-        <h1>Class Scheduler for PeopleSoft</h1>
+        <h1>Class Scheduler for UDST</h1>
     </header>
 
     <section class="main">
@@ -29,7 +30,7 @@
             <div class="input-heading">
                 <h3>Schedule Text Input</h3>
                 <p>Enter schedule text according to the instructions given in the <a
-                        href="https://github.com/60307390/scheduler-udst-v2/tree/main" target="_blank">GitHub</a>.</p>
+                        href="https://github.com/60307390/scheduler-udst-v2/tree/main#how-to-use-the-app" target="_blank">GitHub</a>. Works with PeopleSoft.</p>
             </div>
             <br>
             <div class="input-text-area">
@@ -42,9 +43,9 @@
         <br>
 
         <div class="schedule-buttons-container">
-            <button class="button-font" id="generateSchedule">Load Schedule</button>
-            <button class="button-font" id="clearButton">Clear Selections</button>
-            <button class="button-font" id="exampleData">Example Data</button>
+            <button class="button-font main-function-button" id="generateSchedule">Load Schedule</button>
+            <button class="button-font main-function-button" id="clearButton">Clear Selections</button>
+            <button class="button-font main-function-button" id="exampleData">Example Data</button>
         </div>
 
         <section class="course-interaction-container">
@@ -76,11 +77,12 @@
             </div>
         </section>
 
-        <section id="scheduleContainer">
+        <section class="schedule-container">
             <!-- <p id="scheduleDisplayTextTest1"></p>
             <br>
             <p id="scheduleDisplayTextTest"></p> -->
             <p class="schedule-grid-title inner-title">Schedule Grid</p>
+            <div class="print-button-container"></div>
             <div class="schedule-grid-container">
                 <div class="schedule-cell header">Time</div>
                 <div class="schedule-cell header">Sunday</div>
@@ -110,6 +112,7 @@
         <div class="main-text">
             <p>Star this project and check out my other projects on <a
                     href="https://github.com/60307390/scheduler-udst-v2/tree/main" target="_blank">GitHub</a>.</p>
+            <small style="color:#7e7e7e">This is an <strong>unofficial</strong> project & independent tool. UDST does not endorse or sponsor this application.</small>
         </div>
     </footer>
 

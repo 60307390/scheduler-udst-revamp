@@ -1,4 +1,5 @@
 import { Course, LectureType, OptionSection, Schedule } from "./models.js";
+import { exportDivToPDF } from "./pdfGenerator.js";
 
 // TODO:
 // Export as PNG/JPEG/Clipboard
@@ -49,6 +50,13 @@ export class ScheduleTable {
                 timeColumn.appendChild(clone);
             }
         }
+
+        const scheduleButtonContainer = document.querySelector(".print-button-container")!;
+        const printToPDFButton = document.createElement("button");
+        printToPDFButton.className = "print-pdf-button main-function-button";
+        printToPDFButton.textContent = "Download as PDF";
+        printToPDFButton.addEventListener("click", this.printSchedulePDF);
+        scheduleButtonContainer.appendChild(printToPDFButton); 
     }
 
     addCourse(course: Course, option: OptionSection, color: string): void {
@@ -161,6 +169,11 @@ export class ScheduleTable {
         for (let i = 0; i < dayColumns.length; i++) {
             dayColumns[i].innerHTML = "";
         }
+    }
+
+    printSchedulePDF(): void {
+        const scheduleGridContainer = document.querySelector(".schedule-grid-container")! as HTMLElement;
+        exportDivToPDF(scheduleGridContainer, "schedule"); 
     }
 
 }
