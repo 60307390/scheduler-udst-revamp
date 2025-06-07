@@ -1,4 +1,4 @@
-# scheduler-udst-redux
+# scheduler-udst-revamp
 
 Schedule calculator and visualizer for UDST classes during enrollment with PeopleSoft. Improvized version of previous iteration (`scheduler-udst`), now exclusively in a web interface.
 
