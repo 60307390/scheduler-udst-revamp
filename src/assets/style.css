@@ -299,7 +299,9 @@ td {
 }
 
 .schedule-grid-title {
+    margin: 0px;
     text-align: center;
+    font-size: 24px;
 }
 
 .print-button-container {
