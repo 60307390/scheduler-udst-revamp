@@ -35,6 +35,11 @@ npm run dev
 ![0-tutorial-demo.mp4](demo/assets/0-tutorial-demo.mp4)
 
 
+https://github.com/user-attachments/assets/d5592a0f-f8fe-47dc-aaab-63456935a131
+
+
+
+
 - For adding more classes, repeat the above steps and append to the text (add to the bottom of what you pasted):
 
 ```
