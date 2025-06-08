@@ -172,6 +172,8 @@ export class CoursePicker {
             if (parseInt(hour) > 12) {
                 hour = parseInt(hour) - 12;
                 suffix = "PM";
+            } else if (hour == "12") {
+                suffix = "PM";
             }
             return `${hour}:${minute}${suffix}`
         }
