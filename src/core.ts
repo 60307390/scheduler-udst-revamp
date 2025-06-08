@@ -131,8 +131,10 @@ export function getAvailableCourseOptions(text: string): Array<CourseOptions> {
                         []
                     )
                 )
-                const timeRegex = /(?:^|\n)(Sunday|Monday|Tuesday|Wednesday|Thursday|Friday|Saturday)\n(\d{1,2}:\d{2}[AP]M\s+to\s+\d{1,2}:\d{2}[AP]M)/g;
-                const dayTimeMatches = Array.from(block.matchAll(timeRegex));
+                const dayRegex = /(Sunday|Monday|Tuesday|Wednesday|Thursday|Friday|Saturday)/g;
+                const timeRegex = /(\d{1,2}:\d{2}[AP]M\s+to\s+\d{1,2}:\d{2}[AP]M)/g;
+                const dayMatches = Array.from(block.matchAll(dayRegex)).map(m => m[0]);
+                const timeMatches = Array.from(block.matchAll(timeRegex)).map(m => m[0]);
                 const roomNumbers = Array.from(block.matchAll(/\d{2}\.\d{1}\.\d{2}/g)).map(m => m[0]);
 
                 const lectureTypes = Array.from(block.matchAll(/Lecture|LecTheatre|Laboratory/g)).map(m => m[0]);
@@ -143,8 +145,8 @@ export function getAvailableCourseOptions(text: string): Array<CourseOptions> {
                 let prevRoom: string = roomNumbers[0];
 
                 // for (const [_, day, timing] of dayTimeMatches) {
-                dayTimeMatches.forEach((match, index) => {
-                    const [_, day, timing] = match;
+                dayMatches.forEach((day, index) => {
+                    const timing = timeMatches[index];
                     const [startStr, endStr] = timing.split(" to ").map(s => s.trim());
                     const parseTimeTo24 = (timeStr: string) => {
                         // const [time, suffix] = timeStr.split(/[AP]M/);
