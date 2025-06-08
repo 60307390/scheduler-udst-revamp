@@ -12,21 +12,23 @@ export class CoursePicker {
     // public courseButtonsContainer: HTMLElement;
     public courseOptionData: CourseOptions[];
     public scheduleTable: ScheduleTable;
-    public selectedFilters: StringDict = {};
+    public selectedOptions: StringDict = {};
+    public excludedOptions: Record<string, Set<Number>> = {};
     private filteredCourseOptions: CourseOptions[];
 
     constructor(courseOptionData: CourseOptions[], scheduleTable: ScheduleTable) {
         this.courseOptionData = courseOptionData;
         this.scheduleTable = scheduleTable;
         for (let courseOption of this.courseOptionData) {
-            this.selectedFilters[courseOption.course.code] = null;
+            this.selectedOptions[courseOption.course.code] = null;
+            this.excludedOptions[courseOption.course.code] = new Set();
         }
         this.filteredCourseOptions = this.courseOptionData;
         // this.courseButtonsContainer = document.querySelector(".course-picker-container")!;
     }
 
     updateFilteredCourseOptions(): void {
-        this.filteredCourseOptions = filterCourseOptions(this.courseOptionData, this.selectedFilters);
+        this.filteredCourseOptions = filterCourseOptions(this.courseOptionData, this.selectedOptions, this.excludedOptions);
     }
 
     getCurrentCourseSchedules(): Schedule[] {
@@ -79,11 +81,12 @@ export class CoursePicker {
                     leftClickFunction(this, coursePickerObject);
                 });
 
-                // TODO: Add function to exclude an option
-                const rightClickFunction = () => (null);
+                // EXPERIMENTAL
+                // TODO: Refine exclusion feature
+                // const rightClickFunction = this.excludeCourseOption;
                 button.addEventListener("contextmenu", (event) => {
                     event.preventDefault();
-                    rightClickFunction()
+                    // rightClickFunction(event.currentTarget! as HTMLButtonElement, coursePickerObject);
                 })
 
                 const hoverFunction = this.showCoursePreview;
@@ -110,9 +113,9 @@ export class CoursePicker {
         const style = window.getComputedStyle(document.body);
 
         // TODO: Redesign if want exclusion feature
-        coursePickerObject.selectedFilters[courseCodeBtn] = [optionNumberBtn, optionNumberBtn];
+        coursePickerObject.selectedOptions[courseCodeBtn] = optionNumberBtn;
 
-        coursePickerObject.filteredCourseOptions = filterCourseOptions(courseOptionData, coursePickerObject.selectedFilters);
+        coursePickerObject.filteredCourseOptions = filterCourseOptions(courseOptionData, coursePickerObject.selectedOptions, coursePickerObject.excludedOptions);
 
         coursePickerObject.disableAllButtons();
 
@@ -132,6 +135,22 @@ export class CoursePicker {
         coursePickerObject.enableButtonsPerSchedule();
     }
 
+    excludeCourseOption(button: HTMLButtonElement, coursePickerObject: CoursePicker): void {
+        const courseCodeBtn = button.dataset.courseCode!;
+        const optionNumberBtn = button.dataset.optionNumber!;
+        const courseOptionData = coursePickerObject.courseOptionData;
+
+        if (coursePickerObject.selectedOptions[courseCodeBtn] === optionNumberBtn)
+            return;
+
+        coursePickerObject.excludedOptions[courseCodeBtn].add(parseInt(optionNumberBtn));
+        button.classList.add("excluded-button");
+
+        coursePickerObject.filteredCourseOptions = filterCourseOptions(courseOptionData, coursePickerObject.selectedOptions, coursePickerObject.excludedOptions);
+        coursePickerObject.disableAllButtons();
+        coursePickerObject.enableButtonsPerSchedule();
+    }
+
     toggleCourse(checkbox: HTMLInputElement, coursePickerObject: CoursePicker): void {
         const courseCode = checkbox.dataset.courseCode!;
         const allOptionsGrid = document.querySelectorAll<HTMLElement>(".options-grid");
@@ -140,15 +159,16 @@ export class CoursePicker {
         coursePickerObject.disableAllButtons();
 
         if (checkbox.checked === true) {
-            coursePickerObject.selectedFilters[courseCode] = null;
+            coursePickerObject.selectedOptions[courseCode] = null;
         } else {
             for (let optionButton of courseOptionGrid.children) {
                 optionButton.classList.remove("selected-button");
             }
-            coursePickerObject.selectedFilters[courseCode] = [-1, -1];
+            // TODO: Rework into better logic
+            coursePickerObject.selectedOptions[courseCode] = -1;
             coursePickerObject.scheduleTable.removeCourse(courseCode);
         }
-        coursePickerObject.filteredCourseOptions = filterCourseOptions(coursePickerObject.courseOptionData, coursePickerObject.selectedFilters);
+        coursePickerObject.filteredCourseOptions = filterCourseOptions(coursePickerObject.courseOptionData, coursePickerObject.selectedOptions, coursePickerObject.excludedOptions);
 
         coursePickerObject.enableButtonsPerSchedule();
     }
@@ -187,6 +207,8 @@ export class CoursePicker {
             table.deleteRow(-1);
         }
 
+        const MAX_NAME_LENGTH = 15;
+
         option.section.timeSlots.forEach(timeSlot => {
             const tableRow = table.insertRow(-1);
 
@@ -195,18 +217,33 @@ export class CoursePicker {
             const lectureTypeCell = tableRow.insertCell(-1);
             const dayCell = tableRow.insertCell(-1);
             const timingsCell = tableRow.insertCell(-1);
+            
+            // EXPERIMENTAL
+            // const instructorsCell = tableRow.insertCell(-1);
 
             sectionCell.className = "preview-section";
             roomNumberCell.className = "preview-room-number";
             lectureTypeCell.className = "preview-lecture-type";
             dayCell.className = "preview-day";
             timingsCell.className = "preview-timings";
+            // instructorsCell.className = "preview-instructor";
 
             sectionCell.innerText = `${timeSlot.sectionNumber}`;
             roomNumberCell.innerText = `${timeSlot.roomNumber}`;
             lectureTypeCell.innerText = `${timeSlot.lectureType.valueOf()}`
             dayCell.innerText = `${timeSlot.day.substring(0, 3)}`
             timingsCell.innerText = `${timeTo12Hour(timeSlot.start)} - ${timeTo12Hour(timeSlot.end)}`;
+
+            // EXPERIMENTAL
+            // if (timeSlot.instructor.length > MAX_NAME_LENGTH) {
+            //     const splitName = timeSlot.instructor.split(' ');
+            //     instructorsCell.innerText = splitName[0];
+            //     if (splitName.length > 1)
+            //         instructorsCell.innerText += " " + splitName[1];
+            //     instructorsCell.innerText += " ...";
+            // } else {
+            //     instructorsCell.innerText = timeSlot.instructor;
+            // }
         })
     }
 
@@ -226,6 +263,8 @@ export class CoursePicker {
         const allButtons = document.querySelectorAll<HTMLButtonElement>(".option-button");
 
         let currentCourseSchedules = this.getCurrentCourseSchedules();
+
+        // console.log(currentCourseSchedules);
 
         currentCourseSchedules.forEach(schedule => {
             Array.from(schedule.selections.entries()).forEach(([course, option]) => {
@@ -249,19 +288,21 @@ export class CoursePicker {
     }
 
     clearAll(): void {
-        for (const course in this.selectedFilters) {
+        for (const course in this.selectedOptions) {
             // if (!this.selectedFilters[course].equals([-1, -1]))
-            if (this.selectedFilters[course] && !(this.selectedFilters[course][0] === -1 && this.selectedFilters[course][1] === -1))
-                this.selectedFilters[course] = null;
+            if (this.selectedOptions[course] && !(this.selectedOptions[course] === -1))
+                this.selectedOptions[course] = null;
+            this.excludedOptions[course].clear();
         }
 
         const allButtons = document.querySelectorAll<HTMLButtonElement>(".option-button");
         for (let optionButton of allButtons) {
             optionButton.classList.remove("selected-button");
+            optionButton.classList.remove("excluded-button");
         }
 
         this.disableAllButtons();
-        this.filteredCourseOptions = filterCourseOptions(this.courseOptionData, this.selectedFilters);
+        this.filteredCourseOptions = filterCourseOptions(this.courseOptionData, this.selectedOptions, this.excludedOptions);
         this.enableButtonsPerSchedule();
 
         this.scheduleTable.clear();

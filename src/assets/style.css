@@ -243,6 +243,10 @@ a:visited:hover  {
     }
 }
 
+.options-grid .excluded-button {
+    background-color: red;
+}
+
 /* Course Preview */
 .course-preview {
     /* background-color: #ffffff; */

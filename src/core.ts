@@ -69,22 +69,58 @@ export function getCompatibleSchedules(courseOptionList: Array<CourseOptions>): 
     return compatible;
 }
 
-export function filterCourseOptions(courseOptions: Array<CourseOptions>, optionFilter: StringDict): Array<CourseOptions> {
+// export function filterCourseOptions(courseOptions: Array<CourseOptions>, optionFilter: StringDict): Array<CourseOptions> {
+//     let filteredCourseOptions: Array<CourseOptions> = [];
+//     courseOptions.forEach((courseOption) => {
+//         const currentCourse = courseOption.course;
+//         let optionRange = optionFilter[currentCourse.code];
+//         let filteredOptions;
+//         if (optionRange) {
+//             // if optionRange exists, then filter
+//             filteredOptions = courseOption.options.filter((option) => {
+//                 return (parseInt(optionRange[0]) <= parseInt(option.id))
+//                     && (parseInt(option.id) <= parseInt(optionRange[1]))
+//             });
+//         } else {
+//             // Otherwise leave unfiltered
+//             filteredOptions = courseOption.options;
+//         }
+//         if (filteredOptions.length !== 0) {
+//             const filteredCourseOption = new CourseOptions(
+//                 currentCourse,
+//                 filteredOptions
+//             );
+//             filteredCourseOptions.push(filteredCourseOption);
+//         }
+//     });
+//     return filteredCourseOptions;
+// }
+
+export function filterCourseOptions(courseOptions: Array<CourseOptions>, selectedOptions: StringDict, excludedOptions: Record<string, Set<Number>>): Array<CourseOptions> {
     let filteredCourseOptions: Array<CourseOptions> = [];
     courseOptions.forEach((courseOption) => {
         const currentCourse = courseOption.course;
-        let optionRange = optionFilter[currentCourse.code];
-        let filteredOptions;
-        if (optionRange) {
-            // if optionRange exists, then filter
-            filteredOptions = courseOption.options.filter((option) => {
-                return (parseInt(optionRange[0]) <= parseInt(option.id))
-                    && (parseInt(option.id) <= parseInt(optionRange[1]))
-            });
-        } else {
-            // Otherwise leave unfiltered
-            filteredOptions = courseOption.options;
+
+        const filteredOptions: OptionSection[] = [];
+        for (const option of courseOption.options) {
+            if (selectedOptions[currentCourse.code] !== null && option.id === selectedOptions[currentCourse.code]) {
+                filteredOptions.push(option);
+                break;
+            } else if (selectedOptions[currentCourse.code] === null && !(excludedOptions[currentCourse.code].has(parseInt(option.id)))) {
+                filteredOptions.push(option);
+            }
         }
+        // console.log(filteredOptions);
+        
+        // courseOption.options.forEach(option => {
+        //     if (selectedOptions[currentCourse.code] !== null && option.id === selectedOptions[currentCourse.code]) {
+        //         filteredOptions.push(option);
+        //     } else if (selectedOptions[currentCourse.code] === null && !(option.id in excludedOptions[currentCourse.code])) {
+        //         console.log(currentCourse.code + option.id);
+        //         filteredOptions.push(option);
+        //     }
+        // })
+
         if (filteredOptions.length !== 0) {
             const filteredCourseOption = new CourseOptions(
                 currentCourse,
@@ -94,6 +130,24 @@ export function filterCourseOptions(courseOptions: Array<CourseOptions>, optionF
         }
     });
     return filteredCourseOptions;
+}
+
+function extractInstructors(optionBlock: string): string[] {
+    const lines = optionBlock.split(/\r?\n/);
+    const roomIndex = lines.findIndex(line => /\d{2}\.\d\.\d{2,}/.test(line));
+    if (roomIndex === -1) return [];
+
+    const instructorLines = [];
+    for (let i = roomIndex + 2; i < lines.length; i++) {
+        if (/Open Seats/.test(lines[i])) break;
+        if (lines[i].trim()) instructorLines.push(lines[i].trim());
+    }
+
+    const names = instructorLines.flatMap(line =>  {
+        return line.split(/(?<=[a-z])(?=[A-Z])/)
+    });
+
+    return names;
 }
 
 export function getAvailableCourseOptions(text: string): Array<CourseOptions> {
@@ -135,8 +189,11 @@ export function getAvailableCourseOptions(text: string): Array<CourseOptions> {
                 const timeRegex = /(\d{1,2}:\d{2}[AP]M\s+to\s+\d{1,2}:\d{2}[AP]M)/g;
                 const dayMatches = Array.from(block.matchAll(dayRegex)).map(m => m[0]);
                 const timeMatches = Array.from(block.matchAll(timeRegex)).map(m => m[0]);
-                const roomNumbers = Array.from(block.matchAll(/\d{2}\.\d{1}\.\d{2}/g)).map(m => m[0]);
+                
+                // EXPERIMENTAL
+                const instructorNames = extractInstructors(block);
 
+                const roomNumbers = Array.from(block.matchAll(/\d{2}\.\d{1}\.\d{2}/g)).map(m => m[0]);
                 const lectureTypes = Array.from(block.matchAll(/Lecture|LecTheatre|Laboratory/g)).map(m => m[0]);
 
                 let sectionIndex = 0;
@@ -180,13 +237,16 @@ export function getAvailableCourseOptions(text: string): Array<CourseOptions> {
                     const lectureType = lectureTypes[sectionIndex];
                     const sectionNumber = sectionNumbers[sectionIndex];
 
+                    const instructor = instructorNames[index];
+
                     optionData.section.timeSlots.push(new TimeSlot(
                         day,
                         start,
                         end,
                         roomNumber,
                         LectureType[lectureType as keyof typeof LectureType],
-                        sectionNumber
+                        sectionNumber,
+                        instructor
                     ));
                 })
                 courseData.options.push(optionData);

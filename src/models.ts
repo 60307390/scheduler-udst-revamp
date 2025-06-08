@@ -13,7 +13,8 @@ export class TimeSlot {
         public end: string,
         public roomNumber: string,
         public lectureType: LectureType,
-        public sectionNumber: string
+        public sectionNumber: string,
+        public instructor: string
     ) { }
 
     toDict(): object {
@@ -24,6 +25,7 @@ export class TimeSlot {
             "roomNumber": this.roomNumber,
             "lectureType": this.lectureType.valueOf(),
             "sectionNumber": this.sectionNumber,
+            "instructor": this.instructor
         }
     }
 
@@ -34,13 +36,15 @@ export class TimeSlot {
         let roomNumber = data.roomNumber;
         let lectureType = data.lectureType;
         let sectionNumber = data.sectionNumber;
+        let instructor = data.instructor;
         return new TimeSlot(
             day,
             start,
             end,
             roomNumber,
             LectureType[lectureType as keyof typeof LectureType],
-            sectionNumber
+            sectionNumber,
+            instructor
         );
     }
 
