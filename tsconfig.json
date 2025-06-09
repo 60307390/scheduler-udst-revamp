@@ -8,10 +8,12 @@
 
     "rootDir": "./src",
     "outDir": "./dist",
-
     /* Bundler mode */
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
     "moduleResolution": "node",
     "allowImportingTsExtensions": true,
+    "typeRoots": ["./types", "./node_modules/@types"],
     // "verbatimModuleSyntax": true,
     // "moduleDetection": "force",
     // "noEmit": true,

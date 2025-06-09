@@ -6,7 +6,6 @@ export async function exportDivToPDF(element: HTMLElement, fileName: string) {
         throw new Error(`Element does not exist`);
 
     // Clone element to isolate styles
-    // Step 1: Create canvas for styling
     // Capture div as image
     const canvas = await html2canvas(element, {
         scale: 2, // Higher quality
