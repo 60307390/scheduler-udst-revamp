@@ -110,6 +110,17 @@ export class CoursePicker {
         const optionNumberBtn = button.dataset.optionNumber!;
         const courseOptionData = coursePickerObject.courseOptionData;
 
+        // TODO: Generalize and rework this
+        if (button.classList.contains("selected-button")) {
+            button.classList.remove("selected-button");
+            coursePickerObject.selectedOptions[courseCodeBtn] = null;
+            coursePickerObject.filteredCourseOptions = filterCourseOptions(courseOptionData, coursePickerObject.selectedOptions, coursePickerObject.excludedOptions);
+            coursePickerObject.disableAllButtons();
+            coursePickerObject.enableButtonsPerSchedule();
+            coursePickerObject.scheduleTable.removeCourse(courseCodeBtn);
+            return;
+        }
+
         const style = window.getComputedStyle(document.body);
 
         // TODO: Redesign if want exclusion feature
@@ -217,7 +228,7 @@ export class CoursePicker {
             const lectureTypeCell = tableRow.insertCell(-1);
             const dayCell = tableRow.insertCell(-1);
             const timingsCell = tableRow.insertCell(-1);
-            
+
             // EXPERIMENTAL
             // const instructorsCell = tableRow.insertCell(-1);
 
