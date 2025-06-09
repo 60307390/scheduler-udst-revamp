@@ -168,12 +168,14 @@ export function getAvailableCourseOptions(text: string): Array<CourseOptions> {
         )
 
         const optionBlocks = content.split(/(?=^\s*\d{1,2}\s*$)/m);
+        // const optionBlocks = content.split(/(?=(^\s*\d{1,2}\s*$|(Option \d{1,2} - (Open|Closed))))/m);
 
         for (const block of optionBlocks) {
             if (!block.trim())
                 continue;
             try {
                 const optionMatch = block.match(/^\s*(\d{1,2})\s*$/m);
+                // const optionMatch = block.match(/(^\s*\d{1,2}\s*$|(?:Option) (\d{1,2}) - (?:Open|Closed))/m);
                 if (!optionMatch)
                     continue;
                 const sectionNumbers = Array.from(block.matchAll(/Section\s+(\d+)/g)).map(m => m[1]);
