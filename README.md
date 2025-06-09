@@ -28,13 +28,18 @@ npm run dev
 
 - In PeopleSoft, go to the Enrollment page for classes (Manage Classes > Enrol).
 - Then, select the class that you want to put in the schedule using "Select Class" button.
+
+OR
+
+- Go to the respective course on Course Catalog.
+
 - Copy the entire page (Ctrl + A, Ctrl + C or select all manually and copy):
 - Paste the text into the *text input box* on the website.
 
-- Demo Video with Course Catalog:
-![0-tutorial-demo.mp4](demo/assets/0-tutorial-demo.mp4)
+<!-- ![0-tutorial-demo.mp4](demo/assets/0-tutorial-demo.mp4) -->
 
 
+#### Demo Video with Course Catalog
 https://github.com/user-attachments/assets/d5592a0f-f8fe-47dc-aaab-63456935a131
 
 
