@@ -54,7 +54,7 @@ export class ScheduleTable {
         const scheduleButtonContainer = document.querySelector(".print-button-container")!;
         const printToPDFButton = document.createElement("button");
         printToPDFButton.className = "print-pdf-button main-function-button";
-        printToPDFButton.textContent = "Download as PDF";
+        printToPDFButton.textContent = "Download as PDF (Experimental)";
         printToPDFButton.addEventListener("click", this.printSchedulePDF);
         scheduleButtonContainer.appendChild(printToPDFButton); 
     }
