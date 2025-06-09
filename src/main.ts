@@ -51,3 +51,7 @@ exampleDataButton.addEventListener("click", function() {
         })
 });
 
+// window.addEventListener('beforeunload', function(e) {
+//     e.preventDefault();
+//     e.returnValue = true;
+// });
