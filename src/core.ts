@@ -1,34 +1,56 @@
-import { LectureType, TimeSlot, Section, OptionSection, Course, CourseOptions, Schedule, StringDict } from "./models.js";
+import { LectureType, TimeSlot, Section, OptionSection, Course, CourseOptions, CourseOptionNode, Schedule, StringDict } from "./models.js";
 
-// DEPRECATED FUNCTIONS
-//
-// function cartesianProduct<T>(...allEntries: T[][]): T[][] {
-//     return allEntries.reduce<T[][]>(
-//         (results, entries) =>
-//             results
-//                 .map(result => entries.map(entry => [...result, entry]))
-//                 .reduce((subResults, result) => [...subResults, ...result], []),
-//         [[]]
-//     )
-// }
-//
-// export function getCompatibleSchedules(courseOptionList: Array<CourseOptions>): Array<Schedule> {
-//     const courseList = courseOptionList.map((courseOption) => courseOption.course);
-//     const allOptionsList = courseOptionList.map((courseOption) => courseOption.options);
-//
-//     const optionsCombinations = cartesianProduct(...allOptionsList);
-//
-//     let compatibleSchedules = [];
-//     for (let optionComb of optionsCombinations) {
-//         const scheduleMap = new Map();
-//         courseList.forEach((course, i) => scheduleMap.set(course, optionComb[i]));
-//         const schedule = new Schedule(scheduleMap);
-//         if (!schedule.hasConflicts()) {
-//             compatibleSchedules.push(schedule);
-//         }
-//     }
-//     return compatibleSchedules;
-// }
+// TODO
+
+function buildNodes(courseOptions: CourseOptions[]): CourseOptionNode[] {
+    return courseOptions.flatMap(co =>
+        co.options.map(opt => ({
+            course: co.course,
+            option: opt,
+            key: `${co.course.code}-${opt.id}`
+        } as CourseOptionNode))
+    );
+}
+
+// Good idea?
+type CourseName = string;
+type Key = string;
+export type ConflictGraph = Map<CourseName, Set<Key>>;
+
+
+function buildConflictGraph(nodes: CourseOptionNode[]): ConflictGraph {
+    const graph = new Map<CourseName, Set<Key>>();
+
+    for (let i = 0; i < nodes.length; i++) {
+        for (let j = i + 1; j < nodes.length; j++) {
+            const nodeA = nodes[i];
+            const nodeB = nodes[j];
+
+            if (nodeA.course.code === nodeB.course.code)
+                continue;
+
+            for (let timeSlotA of nodeA.option.section.timeSlots) {
+                for (let timeSlotB of nodeB.option.section.timeSlots) {
+                    if (timeSlotA.overlapsWith(timeSlotB)) {
+                        if (!(graph.get(nodeA.key)))
+                            graph.set(nodeA.key, new Set<Key>());
+                        if (!(graph.get(nodeB.key)))
+                            graph.set(nodeB.key, new Set<Key>());
+                        graph.get(nodeA.key)!.add(nodeB.key);
+                        graph.get(nodeB.key)!.add(nodeA.key);
+                        break;
+                    }
+                }
+            }
+        }
+    }
+    return graph;
+}
+
+export function getConflictsFromCourseOptions(courseOptions: CourseOptions[]): ConflictGraph {
+    let courseOptionNodes: CourseOptionNode[] = buildNodes(courseOptions);
+    return buildConflictGraph(courseOptionNodes);
+}
 
 export function getCompatibleSchedules(courseOptionList: Array<CourseOptions>): Array<Schedule> {
     const courseList = courseOptionList.map(courseOption => courseOption.course);
@@ -111,7 +133,7 @@ export function filterCourseOptions(courseOptions: Array<CourseOptions>, selecte
             }
         }
         // console.log(filteredOptions);
-        
+
         // courseOption.options.forEach(option => {
         //     if (selectedOptions[currentCourse.code] !== null && option.id === selectedOptions[currentCourse.code]) {
         //         filteredOptions.push(option);
@@ -143,7 +165,7 @@ function extractInstructors(optionBlock: string): string[] {
         if (lines[i].trim()) instructorLines.push(lines[i].trim());
     }
 
-    const names = instructorLines.flatMap(line =>  {
+    const names = instructorLines.flatMap(line => {
         return line.split(/(?<=[a-z])(?=[A-Z])/)
     });
 
@@ -191,7 +213,7 @@ export function getAvailableCourseOptions(text: string): Array<CourseOptions> {
                 const timeRegex = /(\d{1,2}:\d{2}[AP]M\s+to\s+\d{1,2}:\d{2}[AP]M)/g;
                 const dayMatches = Array.from(block.matchAll(dayRegex)).map(m => m[0]);
                 const timeMatches = Array.from(block.matchAll(timeRegex)).map(m => m[0]);
-                
+
                 // EXPERIMENTAL
                 const instructorNames = extractInstructors(block);
 

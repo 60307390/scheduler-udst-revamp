@@ -138,6 +138,12 @@ export class CourseOptions {
     }
 }
 
+export interface CourseOptionNode {
+    course: Course;
+    option: OptionSection;
+    key: string;
+}
+
 export class Schedule {
     constructor(
         public selections: Map<Course, OptionSection> = new Map<Course, OptionSection>
