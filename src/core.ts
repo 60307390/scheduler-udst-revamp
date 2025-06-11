@@ -48,8 +48,17 @@ function buildConflictGraph(nodes: CourseOptionNode[]): ConflictGraph {
 }
 
 export function getConflictsFromCourseOptions(courseOptions: CourseOptions[]): ConflictGraph {
-    let courseOptionNodes: CourseOptionNode[] = buildNodes(courseOptions);
+    const courseOptionNodes: CourseOptionNode[] = buildNodes(courseOptions);
     return buildConflictGraph(courseOptionNodes);
+}
+
+export function getNodeLookup(courseOptions: CourseOptions[]): Map<Key, CourseOptionNode> {
+    const courseOptionNodes: CourseOptionNode[] = buildNodes(courseOptions);
+    const nodeLookUp: Map<Key, CourseOptionNode> = new Map();
+    courseOptionNodes.forEach(courseOptionNode => {
+        nodeLookUp.set(courseOptionNode.key, courseOptionNode);
+    })
+    return nodeLookUp;
 }
 
 export function getCompatibleSchedules(courseOptionList: Array<CourseOptions>): Array<Schedule> {

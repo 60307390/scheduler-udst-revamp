@@ -22,7 +22,7 @@ function initialize(): void {
 
     if (courseButtons) {
         courseButtons.generateCourseButtons();
-        courseButtons.enableButtonsPerSchedule();
+        // courseButtons.enableButtonsPerSchedule();
     }
 
 }

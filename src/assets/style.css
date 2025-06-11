@@ -31,9 +31,21 @@ TODO:
     --disabled-button-bg: #c3c3c3;
     --disabled-button-border: #b6b6b6;
 
-    /* TODO */
-    /* --softConflict */
-    /* --hardConflict */
+    /* EXPERIMENTAL */
+    /* CONFLICT STYLINGS */
+    /* --soft-conflict-bg: #fcba03; */
+    /* --soft-conflict-border: #000000; */
+    --soft-conflict-bg: #ffe394;
+    --soft-conflict-border: #ffd45c;
+
+    /* --hard-conflict-bg: #f99; */
+    --hard-conflict-bg: #ff8585;
+    --hard-conflict-border: #ff5f5f;
+    /* --hard-conflict-color: #ffffff; */
+
+    --conflict-highlight-bg: #ffb43f;
+    --conflict-highlight-border: #ffa700;
+    --conflict-highlight-color: #222222;
 }
 
 .inter-font,
@@ -284,35 +296,30 @@ a:visited:hover {
     align-items: center;
 }
 
-.options-grid .option-button {
+.options-grid .option-button, .available-button {
     background-color: var(--available-button-bg);
-    /* background-color: #eff5ff; */
     color: black;
     font-size: 16px;
-    /* padding: 5px 10px; */
     width: 33px;
     height: 32px;
     border: 2px solid var(--available-button-border);
-    /* border: #d5e6ff 2px solid; */
     gap: 0px;
     cursor: pointer;
 
     &:not(:disabled):hover {
         background-color: #dedede;
-        /* background-color: #b3d3ff; */
     }
 }
 
 .options-grid .option-button:disabled {
     background-color: var(--disabled-button-bg);
-    /* background-color: #b1bfd3; */
     border: 2px solid var(--disabled-button-border);
     cursor: default;
 }
 
 .options-grid .selected-button {
-    background-color: var(--selected-button-bg);
-    border: 2px solid var(--selected-button-border);
+    background-color: var(--selected-button-bg) !important;
+    border: 2px solid var(--selected-button-border) !important;
     color: white;
 
     &:not(:disabled):hover {
@@ -320,8 +327,34 @@ a:visited:hover {
     }
 }
 
-.options-grid .excluded-button {
-    background-color: red;
+/* --------------------------------- */
+/* EXPERIMENTAL BUTTON STYLING */
+/* --------------------------------- */
+.available-button {
+    background-color: var(--available-button-bg) !important;
+    border: 2px solid var(--available-button-border) !important;
+}
+
+.soft-conflict-button {
+    background-color: var(--soft-conflict-bg) !important;
+    border: 2px solid var(--soft-conflict-border) !important;
+}
+
+.hard-conflict-button {
+    background-color: var(--hard-conflict-bg) !important;
+    border: 2px solid var(--hard-conflict-border) !important;
+    color: var(--hard-conflict-color) !important;
+}
+
+.conflict-highlight-button {
+    background-color: var(--conflict-highlight-bg) !important;
+    border: 2px solid var(--conflict-highlight-border) !important;
+    color: var(--conflict-highlight-color) !important;
+}
+
+.excluded-button {
+    background-color: var(--disabled-button-bg) !important;
+    border: 2px solid var(--disabled-button-border) !important;
 }
 
 /* Course Preview */

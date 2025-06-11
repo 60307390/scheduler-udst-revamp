@@ -1,20 +1,39 @@
-import { filterCourseOptions, getCompatibleSchedules } from "./core.js";
-import { CourseOptions, Schedule, StringDict } from "./models.js";
+import { ConflictGraph, filterCourseOptions, getCompatibleSchedules, getConflictsFromCourseOptions, getNodeLookup } from "./core.js";
+import { CourseOptionNode, CourseOptions, Schedule, StringDict } from "./models.js";
 import { ScheduleTable } from "./scheduleTable.js";
 
-// TODO 
-// Nice-to-haves / QoL
-// Add function to exclude an option on right-click
-// Highlight the course options that will be excluded/conflict with course option on hover (?)
+type ButtonState =
+    | "available-button"
+    | "selected-button"
+    | "excluded-button"
+    | "conflict-highlight-button"
+    | "soft-conflict-button"
+    | "hard-conflict-button";
 
+const buttonStates: ButtonState[] = [
+    "available-button",
+    "selected-button",
+    "excluded-button",
+    "conflict-highlight-button",
+    "soft-conflict-button",
+    "hard-conflict-button"
+];
+
+type Key = string;
 
 export class CoursePicker {
-    // public courseButtonsContainer: HTMLElement;
+    // TODO: Encapsulation & State Management
     public courseOptionData: CourseOptions[];
     public scheduleTable: ScheduleTable;
     public selectedOptions: StringDict = {};
     public excludedOptions: Record<string, Set<Number>> = {};
     private filteredCourseOptions: CourseOptions[];
+    // TODO: Toggle for conflicts?
+    public conflictGraph: ConflictGraph = new Map<string, Set<Key>>();
+    public nodeLookUp: Map<Key, CourseOptionNode>;
+    public selectedKeys: Set<Key> = new Set<Key>();
+    public hardConflictKeys: Set<Key> = new Set<Key>();
+    private advancedMode: boolean = true;
 
     constructor(courseOptionData: CourseOptions[], scheduleTable: ScheduleTable) {
         this.courseOptionData = courseOptionData;
@@ -24,7 +43,18 @@ export class CoursePicker {
             this.excludedOptions[courseOption.course.code] = new Set();
         }
         this.filteredCourseOptions = this.courseOptionData;
-        // this.courseButtonsContainer = document.querySelector(".course-picker-container")!;
+        this.conflictGraph = getConflictsFromCourseOptions(this.courseOptionData);
+        this.nodeLookUp = getNodeLookup(this.courseOptionData);
+    }
+
+    enableAdvancedMode(): void {
+        this.advancedMode = true;
+        this.refreshButtons();
+    }
+
+    disableAdvancedMode(): void {
+        this.advancedMode = false;
+        this.refreshButtons();
     }
 
     updateFilteredCourseOptions(): void {
@@ -73,7 +103,7 @@ export class CoursePicker {
 
                 button.dataset.courseCode = courseDetails.code;
                 button.dataset.optionNumber = option.id;
-                button.disabled = true;
+                // button.disabled = true;
 
                 const leftClickFunction = this.selectCourseOption;
                 const coursePickerObject = this;
@@ -89,10 +119,15 @@ export class CoursePicker {
                     // rightClickFunction(event.currentTarget! as HTMLButtonElement, coursePickerObject);
                 })
 
-                const hoverFunction = this.showCoursePreview;
+                const hoverFunction = this.onButtonHover;
                 button.addEventListener("mouseover", function() {
                     hoverFunction(this, coursePickerObject);
                 })
+
+                const hoverOutFunction = this.onButtonHoverOut;
+                button.addEventListener("mouseout", () => {
+                    hoverOutFunction(button, coursePickerObject);
+                });
 
                 optionsGrid.appendChild(button);
             });
@@ -103,6 +138,7 @@ export class CoursePicker {
             courseDiv.appendChild(optionsGrid);
             courseButtonsContainer.appendChild(courseDiv);
         });
+        this.refreshButtons();
     }
 
     selectCourseOption(button: HTMLButtonElement, coursePickerObject: CoursePicker): void {
@@ -115,9 +151,19 @@ export class CoursePicker {
             button.classList.remove("selected-button");
             coursePickerObject.selectedOptions[courseCodeBtn] = null;
             coursePickerObject.filteredCourseOptions = filterCourseOptions(courseOptionData, coursePickerObject.selectedOptions, coursePickerObject.excludedOptions);
-            coursePickerObject.disableAllButtons();
-            coursePickerObject.enableButtonsPerSchedule();
+            coursePickerObject.refreshButtons();
             coursePickerObject.scheduleTable.removeCourse(courseCodeBtn);
+
+            if (!coursePickerObject.advancedMode)
+                return;
+
+            coursePickerObject.selectedKeys.delete(`${courseCodeBtn}-${optionNumberBtn}`);
+            const conflictingKeys: Set<Key> = coursePickerObject.conflictGraph.get(`${courseCodeBtn}-${optionNumberBtn}`)!;
+            for (let key of conflictingKeys) {
+                coursePickerObject.hardConflictKeys.delete(key);
+            }
+            coursePickerObject.refreshButtons();
+
             return;
         }
 
@@ -128,11 +174,11 @@ export class CoursePicker {
 
         coursePickerObject.filteredCourseOptions = filterCourseOptions(courseOptionData, coursePickerObject.selectedOptions, coursePickerObject.excludedOptions);
 
-        coursePickerObject.disableAllButtons();
-
         // let currentCourseSchedules = coursePickerObject.getCurrentCourseSchedules();
 
         button.classList.add("selected-button");
+
+        const MAX_COLORS = 6;
 
         const courseOption = courseOptionData.find(courseOptions => {
             return courseOptions.course.code === courseCodeBtn;
@@ -140,10 +186,23 @@ export class CoursePicker {
         const course = courseOption.course;
         const option = courseOption.options.find(option => option.id === optionNumberBtn)!;
         const courseIndex = courseOptionData.findIndex((courseOption) => courseOption.course.code === courseCodeBtn);
-        const color = style.getPropertyValue(`--cell-color-${courseIndex + 1}`);
+        const color = style.getPropertyValue(`--cell-color-${courseIndex % MAX_COLORS + 1}`);
         coursePickerObject.scheduleTable.addCourse(course, option, color);
 
-        coursePickerObject.enableButtonsPerSchedule();
+        if (!coursePickerObject.advancedMode) {
+            coursePickerObject.refreshButtons();
+            return;
+        }
+
+        coursePickerObject.selectedKeys.add(`${course.code}-${option.id}`);
+        const conflictingCourseKeys = coursePickerObject.conflictGraph.get(`${course.code}-${option.id}`);
+        if (!conflictingCourseKeys)
+            return;
+        for (let key of conflictingCourseKeys.keys()) {
+            coursePickerObject.hardConflictKeys.add(key);
+        }
+
+        coursePickerObject.refreshButtons();
     }
 
     excludeCourseOption(button: HTMLButtonElement, coursePickerObject: CoursePicker): void {
@@ -158,8 +217,7 @@ export class CoursePicker {
         button.classList.add("excluded-button");
 
         coursePickerObject.filteredCourseOptions = filterCourseOptions(courseOptionData, coursePickerObject.selectedOptions, coursePickerObject.excludedOptions);
-        coursePickerObject.disableAllButtons();
-        coursePickerObject.enableButtonsPerSchedule();
+        coursePickerObject.refreshButtons();
     }
 
     toggleCourse(checkbox: HTMLInputElement, coursePickerObject: CoursePicker): void {
@@ -167,7 +225,6 @@ export class CoursePicker {
         const allOptionsGrid = document.querySelectorAll<HTMLElement>(".options-grid");
         // const courseOptionGrid = Array.from(allOptionsGrid).find(optGrid => optGrid.children[0].dataset.courseCode === courseCode);
         const courseOptionGrid = Array.from(allOptionsGrid.values()).find((x: HTMLElement) => x.dataset.courseCode === courseCode)!;
-        coursePickerObject.disableAllButtons();
 
         if (checkbox.checked === true) {
             coursePickerObject.selectedOptions[courseCode] = null;
@@ -181,10 +238,54 @@ export class CoursePicker {
         }
         coursePickerObject.filteredCourseOptions = filterCourseOptions(coursePickerObject.courseOptionData, coursePickerObject.selectedOptions, coursePickerObject.excludedOptions);
 
-        coursePickerObject.enableButtonsPerSchedule();
+        coursePickerObject.refreshButtons();
     }
 
-    showCoursePreview(button: HTMLButtonElement, coursePickerObject: CoursePicker) {
+    onButtonHover(button: HTMLButtonElement, coursePickerObject: CoursePicker): void {
+        coursePickerObject.showCoursePreview(button, coursePickerObject);
+        if (!coursePickerObject.advancedMode) {
+            return;
+        }
+
+        // Highlight potential hard conflicts
+        const courseCodeBtn = button.dataset.courseCode!;
+        const optionNumberBtn = button.dataset.optionNumber!;
+
+        const conflictingCourseKeys = coursePickerObject.conflictGraph.get(`${courseCodeBtn}-${optionNumberBtn}`);
+        if (!conflictingCourseKeys)
+            return;
+        for (let key of conflictingCourseKeys) {
+            const confCourseOption =  coursePickerObject.nodeLookUp.get(key)!;  
+            const confCourseCode = confCourseOption.course.code;
+            const confOptionNo = confCourseOption.option.id;
+
+            const button = document.querySelector<HTMLButtonElement>(`button[data-course-code="${confCourseCode}"][data-option-number="${confOptionNo}"]`)!;
+            if (!button.classList.contains("selected-button"))
+                button.classList.add("conflict-highlight-button");
+        }
+    }
+
+    onButtonHoverOut(button: HTMLButtonElement, coursePickerObject: CoursePicker): void {
+        if (!coursePickerObject.advancedMode)
+            return;
+        // Disable hover effect
+        const courseCodeBtn = button.dataset.courseCode!;
+        const optionNumberBtn = button.dataset.optionNumber!;
+
+        const conflictingCourseKeys = coursePickerObject.conflictGraph.get(`${courseCodeBtn}-${optionNumberBtn}`);
+        if (!conflictingCourseKeys)
+            return;
+        for (let key of conflictingCourseKeys) {
+            const confCourseOption =  coursePickerObject.nodeLookUp.get(key)!;  
+            const confCourseCode = confCourseOption.course.code;
+            const confOptionNo = confCourseOption.option.id;
+
+            const button = document.querySelector<HTMLButtonElement>(`button[data-course-code="${confCourseCode}"][data-option-number="${confOptionNo}"]`)!;
+            button.classList.remove("conflict-highlight-button");
+        }
+    }
+
+    showCoursePreview(button: HTMLButtonElement, coursePickerObject: CoursePicker): void {
         const courseCodeBtn = button.dataset.courseCode!;
         const optionNumberBtn = button.dataset.optionNumber!;
         const courseOptionData = coursePickerObject.courseOptionData;
@@ -229,7 +330,7 @@ export class CoursePicker {
             const dayCell = tableRow.insertCell(-1);
             const timingsCell = tableRow.insertCell(-1);
 
-            // EXPERIMENTAL
+            // EXPERIMENTAL -- Instructor Name Preview
             // const instructorsCell = tableRow.insertCell(-1);
 
             sectionCell.className = "preview-section";
@@ -271,22 +372,14 @@ export class CoursePicker {
     }
 
     enableButtonsPerSchedule(): void {
-        const allButtons = document.querySelectorAll<HTMLButtonElement>(".option-button");
+        // const allButtons = document.querySelectorAll<HTMLButtonElement>(".option-button");
 
         let currentCourseSchedules = this.getCurrentCourseSchedules();
 
-        // console.log(currentCourseSchedules);
-
         currentCourseSchedules.forEach(schedule => {
             Array.from(schedule.selections.entries()).forEach(([course, option]) => {
-                const courseCode = course.code;
-                const optionNumber = option.id;
-                for (let optionButton of allButtons) {
-                    if (optionButton.dataset.courseCode === courseCode && optionButton.dataset.optionNumber === optionNumber) {
-                        optionButton.disabled = false;
-                    }
-                }
-
+                const button = document.querySelector<HTMLButtonElement>(`button[data-course-code="${course.code}"][data-option-number="${option.id}"]`)!;
+                button.disabled = false;
             })
         })
     }
@@ -296,6 +389,76 @@ export class CoursePicker {
         for (let optionButton of allButtons) {
             optionButton.disabled = true;
         }
+    }
+
+    // EXPERIMENTAL
+    refreshButtons(): void {
+        if (!this.advancedMode) {
+            this.disableAllButtons();
+            this.enableButtonsPerSchedule();
+            return;
+        }
+        // Similar to disableAllButtons
+        // Declare all buttons as soft conflict
+        const allButtons = document.querySelectorAll<HTMLButtonElement>(".option-button");
+        for (let button of allButtons) {
+            const courseCodeBtn = button.dataset.courseCode!;
+            // const optionNoBtn = button.dataset.optionNumber!;
+            if (this.selectedOptions[courseCodeBtn] === -1) {
+                button.disabled = true;
+                button.classList.add("excluded-button");
+            }
+            else if (!button.classList.contains("selected-button")) {
+                if (this.selectedOptions[courseCodeBtn] !== null) {
+                    button.disabled = true;
+                    button.classList.add("excluded-button");
+                } else {
+                    button.disabled = false;
+                    button.classList.remove(...buttonStates);
+                    button.classList.add("soft-conflict-button");
+                }
+            }
+        }
+
+        // Restore all hard conflicts
+        // this.hardConflictKeys.forEach(key => {
+        //     const courseOption = this.nodeLookUp.get(key)!;
+        //     const courseCode = courseOption.course.code;
+        //     const optionNo = courseOption.option.id;
+        //     const button = document.querySelector<HTMLButtonElement>(`button[data-course-code="${courseCode}"][data-option-number="${optionNo}"]`)!;
+        //     button.classList.add("hard-conflict-button");
+        //     button.disabled = true;
+        // })
+        
+        // Restore all hard conflicts
+        // Look at all selected options, and mark all their conflicting options as hard conflicts
+        this.selectedKeys.forEach(key => {
+            const confCourseOptions = this.conflictGraph.get(key);
+            if (!confCourseOptions)
+                return;
+            for (let confKey of confCourseOptions.keys()) {
+                const confCourseOption = this.nodeLookUp.get(confKey)!;
+                const courseCode = confCourseOption.course.code;
+                const optionNo = confCourseOption.option.id;
+                const button = document.querySelector<HTMLButtonElement>(`button[data-course-code="${courseCode}"][data-option-number="${optionNo}"]`)!;
+                button.classList.add("hard-conflict-button");
+                button.disabled = true;
+            }
+        })
+
+        // Similar to enableButtons
+        // Declare all options in compatible schedules as 'available'
+        let currentCourseSchedules = this.getCurrentCourseSchedules();
+        currentCourseSchedules.forEach(schedule => {
+            Array.from(schedule.selections.entries()).forEach(([course, option]) => {
+                const button = document.querySelector<HTMLButtonElement>(`button[data-course-code="${course.code}"][data-option-number="${option.id}"]`)!;
+                if (!button.classList.contains("selected-button") || button.classList.contains("excluded-button")) {
+                    button.classList.remove("soft-conflict-button");
+                    button.classList.add("available-button");
+                }
+            })
+        })
+
     }
 
     clearAll(): void {
@@ -312,8 +475,8 @@ export class CoursePicker {
             optionButton.classList.remove("excluded-button");
         }
 
-        this.disableAllButtons();
         this.filteredCourseOptions = filterCourseOptions(this.courseOptionData, this.selectedOptions, this.excludedOptions);
+        this.disableAllButtons();
         this.enableButtonsPerSchedule();
 
         this.scheduleTable.clear();
