@@ -168,9 +168,6 @@ export class CoursePicker {
             coursePickerObject.refreshButtons();
             coursePickerObject.scheduleTable.removeCourse(courseCodeBtn);
 
-            if (!coursePickerObject.advancedMode)
-                return;
-
             coursePickerObject.selectedKeys.delete(`${courseCodeBtn}-${optionNumberBtn}`);
             const conflictingKeys: Set<Key> = coursePickerObject.conflictGraph.get(`${courseCodeBtn}-${optionNumberBtn}`)!;
             for (let key of conflictingKeys) {
@@ -200,11 +197,6 @@ export class CoursePicker {
         const courseIndex = courseOptionData.findIndex((courseOption) => courseOption.course.code === courseCodeBtn);
         const color = style.getPropertyValue(`--cell-color-${courseIndex % MAX_COLORS + 1}`);
         coursePickerObject.scheduleTable.addCourse(course, option, color);
-
-        if (!coursePickerObject.advancedMode) {
-            coursePickerObject.refreshButtons();
-            return;
-        }
 
         coursePickerObject.selectedKeys.add(`${course.code}-${option.id}`);
         const conflictingCourseKeys = coursePickerObject.conflictGraph.get(`${course.code}-${option.id}`);
