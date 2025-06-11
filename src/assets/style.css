@@ -212,11 +212,16 @@ a:visited:hover {
 
 
 /* --------------------------------------------------------- */
-/* Mid-Section -- Legend */
+/* Mid-Section -- Usage Info */
 /* --------------------------------------------------------- */
 .usage-info-container {
     margin: 0px 20px;
     padding: 5px 20px;
+
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    /* display: flex; */
+    /* justify-content: space-between; */
 }
 
 .usage-info p {
@@ -257,6 +262,12 @@ a:visited:hover {
     border: 2px solid var(--disabled-button-border);
 }
 
+/* Settings */
+.settings-param {
+    display: flex;
+    gap: 15px;
+    align-items: center;
+}
 
 /* --------------------------------------------------------- */
 /* Mid-Section -- Course Interaction */
@@ -346,15 +357,15 @@ a:visited:hover {
     color: var(--hard-conflict-color) !important;
 }
 
+.excluded-button {
+    background-color: var(--disabled-button-bg) !important;
+    border: 2px solid var(--disabled-button-border) !important;
+}
+
 .conflict-highlight-button {
     background-color: var(--conflict-highlight-bg) !important;
     border: 2px solid var(--conflict-highlight-border) !important;
     color: var(--conflict-highlight-color) !important;
-}
-
-.excluded-button {
-    background-color: var(--disabled-button-bg) !important;
-    border: 2px solid var(--disabled-button-border) !important;
 }
 
 /* Course Preview */

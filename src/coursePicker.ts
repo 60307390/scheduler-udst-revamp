@@ -2,6 +2,11 @@ import { ConflictGraph, filterCourseOptions, getCompatibleSchedules, getConflict
 import { CourseOptionNode, CourseOptions, Schedule, StringDict } from "./models.js";
 import { ScheduleTable } from "./scheduleTable.js";
 
+// !!! IMPORTANT
+// Note for all future developers who see this code (including myself)
+// Don't panic. Yes, this is a mess.
+// Yes, it will be cleaned up. But not now.
+
 type ButtonState =
     | "available-button"
     | "selected-button"
@@ -28,12 +33,16 @@ export class CoursePicker {
     public selectedOptions: StringDict = {};
     public excludedOptions: Record<string, Set<Number>> = {};
     private filteredCourseOptions: CourseOptions[];
-    // TODO: Toggle for conflicts?
+
     public conflictGraph: ConflictGraph = new Map<string, Set<Key>>();
     public nodeLookUp: Map<Key, CourseOptionNode>;
+
     public selectedKeys: Set<Key> = new Set<Key>();
     public hardConflictKeys: Set<Key> = new Set<Key>();
-    private advancedMode: boolean = true;
+
+    private buttonCache = new Map<Key, HTMLButtonElement>();
+
+    private advancedMode: boolean = false;
 
     constructor(courseOptionData: CourseOptions[], scheduleTable: ScheduleTable) {
         this.courseOptionData = courseOptionData;
@@ -113,6 +122,7 @@ export class CoursePicker {
 
                 // EXPERIMENTAL
                 // TODO: Refine exclusion feature
+                // On second thought, this is overengineering?
                 // const rightClickFunction = this.excludeCourseOption;
                 button.addEventListener("contextmenu", (event) => {
                     event.preventDefault();
@@ -130,6 +140,8 @@ export class CoursePicker {
                 });
 
                 optionsGrid.appendChild(button);
+
+                this.buttonCache.set(`${courseDetails.code}-${option.id}`, button);
             });
 
             titleDiv.appendChild(toggleCourseCheckbox);
@@ -173,8 +185,6 @@ export class CoursePicker {
         coursePickerObject.selectedOptions[courseCodeBtn] = optionNumberBtn;
 
         coursePickerObject.filteredCourseOptions = filterCourseOptions(courseOptionData, coursePickerObject.selectedOptions, coursePickerObject.excludedOptions);
-
-        // let currentCourseSchedules = coursePickerObject.getCurrentCourseSchedules();
 
         button.classList.add("selected-button");
 
@@ -255,11 +265,7 @@ export class CoursePicker {
         if (!conflictingCourseKeys)
             return;
         for (let key of conflictingCourseKeys) {
-            const confCourseOption =  coursePickerObject.nodeLookUp.get(key)!;  
-            const confCourseCode = confCourseOption.course.code;
-            const confOptionNo = confCourseOption.option.id;
-
-            const button = document.querySelector<HTMLButtonElement>(`button[data-course-code="${confCourseCode}"][data-option-number="${confOptionNo}"]`)!;
+            const button = coursePickerObject.buttonCache.get(key)!;
             if (!button.classList.contains("selected-button"))
                 button.classList.add("conflict-highlight-button");
         }
@@ -276,11 +282,7 @@ export class CoursePicker {
         if (!conflictingCourseKeys)
             return;
         for (let key of conflictingCourseKeys) {
-            const confCourseOption =  coursePickerObject.nodeLookUp.get(key)!;  
-            const confCourseCode = confCourseOption.course.code;
-            const confOptionNo = confCourseOption.option.id;
-
-            const button = document.querySelector<HTMLButtonElement>(`button[data-course-code="${confCourseCode}"][data-option-number="${confOptionNo}"]`)!;
+            const button = coursePickerObject.buttonCache.get(key)!;
             button.classList.remove("conflict-highlight-button");
         }
     }
@@ -319,7 +321,7 @@ export class CoursePicker {
             table.deleteRow(-1);
         }
 
-        const MAX_NAME_LENGTH = 15;
+        // const MAX_NAME_LENGTH = 15;
 
         option.section.timeSlots.forEach(timeSlot => {
             const tableRow = table.insertRow(-1);
@@ -379,7 +381,10 @@ export class CoursePicker {
         currentCourseSchedules.forEach(schedule => {
             Array.from(schedule.selections.entries()).forEach(([course, option]) => {
                 const button = document.querySelector<HTMLButtonElement>(`button[data-course-code="${course.code}"][data-option-number="${option.id}"]`)!;
-                button.disabled = false;
+                if (!button.classList.contains("selected-button")) {
+                    button.classList.remove(...buttonStates);
+                    button.disabled = false;
+                }
             })
         })
     }
@@ -387,7 +392,11 @@ export class CoursePicker {
     disableAllButtons(): void {
         const allButtons = document.querySelectorAll<HTMLButtonElement>(".option-button");
         for (let optionButton of allButtons) {
-            optionButton.disabled = true;
+            if (!optionButton.classList.contains("selected-button")) {
+                optionButton.classList.remove(...buttonStates);
+                optionButton.classList.add("excluded-button");
+                optionButton.disabled = true;
+            }
         }
     }
 

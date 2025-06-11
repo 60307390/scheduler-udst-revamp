@@ -51,6 +51,15 @@ exampleDataButton.addEventListener("click", function() {
         })
 });
 
+const toggleAdvancedCheckbox = document.getElementById("toggleAdvancedMode")! as HTMLInputElement;
+toggleAdvancedCheckbox.addEventListener("click", function() {
+    if (this.checked) {
+        courseButtons?.enableAdvancedMode();
+    } else {
+        courseButtons?.disableAdvancedMode();
+    }
+})
+
 // window.addEventListener('beforeunload', function(e) {
 //     e.preventDefault();
 //     e.returnValue = true;
