@@ -53,10 +53,17 @@ exampleDataButton.addEventListener("click", function() {
 
 const toggleAdvancedCheckbox = document.getElementById("toggleAdvancedMode")! as HTMLInputElement;
 toggleAdvancedCheckbox.addEventListener("click", function() {
+    const advancedModeDisplayItems: NodeListOf<HTMLElement> = document.querySelectorAll(".adv-mode-exclusive");
     if (this.checked) {
         courseButtons?.enableAdvancedMode();
+        for (let element of advancedModeDisplayItems) {
+            element.classList.remove("hidden");
+        }
     } else {
         courseButtons?.disableAdvancedMode();
+        for (let element of advancedModeDisplayItems) {
+            element.classList.add("hidden");
+        }
     }
 })
 

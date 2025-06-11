@@ -62,8 +62,28 @@
                         <p>Selected</p>
                     </div>
                     <div class="disabled-legend legend-item">
-                        <div class="disabled-color legend-color-box simple-mode-exclusive"></div>
+                        <div class="disabled-color legend-color-box"></div>
                         <p>Disabled</p>
+                    </div>
+                    <div class="soft-conflict-legend legend-item adv-mode-exclusive hidden">
+                        <div class="soft-conflict-color legend-color-box"></div>
+                        <p>
+                            <strong>Soft Conflict</strong>
+                            <br>
+                            Results in incompatible schedule
+                        </p>
+                    </div>
+                    <div class="hard-conflict-legend legend-item adv-mode-exclusive hidden">
+                        <div class="hard-conflict-color legend-color-box"></div>
+                        <p>
+                            <strong>Hard Conflict</strong>
+                            <br>
+                            Conflict with selected
+                        </p>
+                    </div>
+                    <div class="conflict-highlight-legend legend-item adv-mode-exclusive hidden">
+                        <div class="conflict-highlight-color legend-color-box"></div>
+                        <p>Conflict <br> Highlight</p>
                     </div>
                 </div>
             </div>
@@ -74,6 +94,10 @@
                         <input type="checkbox" id="toggleAdvancedMode" name="toggleAdvancedMode">
                         <label for="toggleAdvancedMode">Show Conflicts (Advanced)</label>
                     </div>
+                    <!-- <div class="toggle-prof settings-param"> -->
+                    <!--     <input type="checkbox" id="toggleProfessor" name="toggleAdvancedMode"> -->
+                    <!--     <label for="toggleProfessor">Professor in Preview (Experimental)</label> -->
+                    <!-- </div> -->
                 </div>
             </div>  
         </section>
