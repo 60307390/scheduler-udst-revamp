@@ -6,6 +6,8 @@ import { ScheduleTable } from "./scheduleTable.js";
 // Note for all future developers who see this code (including myself)
 // Don't panic. Yes, this is a mess.
 // Yes, it will be cleaned up. But not now.
+//
+// "Nothing is more permanent than a temporary solution"
 
 type ButtonState =
     | "available-button"
