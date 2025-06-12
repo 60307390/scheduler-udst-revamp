@@ -45,7 +45,7 @@ TODO:
     /* --hard-conflict-color: #ffffff; */
 
     --conflict-highlight-bg: #ffb43f;
-    --conflict-highlight-border: #ffa700;
+    --conflict-highlight-border: #e69600;
     --conflict-highlight-color: #222222;
 }
 
@@ -244,7 +244,7 @@ a:visited:hover {
 }
 
 .hidden {
-    display: none;
+    display: none !important;
 }
 
 .legend-color-box {
@@ -286,6 +286,12 @@ a:visited:hover {
 }
 
 /* Settings */
+.settings-param-container {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
 .settings-param {
     display: flex;
     gap: 15px;
@@ -355,7 +361,7 @@ a:visited:hover {
 .options-grid .selected-button {
     background-color: var(--selected-button-bg) !important;
     border: 2px solid var(--selected-button-border) !important;
-    color: white;
+    color: white !important;
 
     &:not(:disabled):hover {
         background-color: var(--secondary-accent) !important;
