@@ -83,21 +83,29 @@
                     </div>
                     <div class="conflict-highlight-legend legend-item adv-mode-exclusive hidden">
                         <div class="conflict-highlight-color legend-color-box"></div>
-                        <p>Conflict <br> Highlight</p>
+                        <p>
+                            <strong>Conflict Highlight</strong>
+                            <br>
+                            Conflict with hovered
+                        </p>
                     </div>
                 </div>
             </div>
             <div class="settings-container">
                 <p class="settings-title inner-title">Settings</p>
-                <div class="setting-param-container">
+                <div class="settings-param-container">
                     <div class="toggle-advanced settings-param">
-                        <input type="checkbox" id="toggleAdvancedMode" name="toggleAdvancedMode">
+                        <input type="checkbox" id="toggleAdvancedMode">
                         <label for="toggleAdvancedMode">Show Conflicts (Advanced)</label>
                     </div>
-                    <!-- <div class="toggle-prof settings-param"> -->
-                    <!--     <input type="checkbox" id="toggleProfessor" name="toggleAdvancedMode"> -->
-                    <!--     <label for="toggleProfessor">Professor in Preview (Experimental)</label> -->
-                    <!-- </div> -->
+                    <div class="toggle-hard-conflict-click settings-param hidden adv-mode-exclusive">
+                        <input type="checkbox" id="hardConflictClickable">
+                        <label for="hardConflictClickable">Enable selecting Hard Conflicts (Advanced)</label>
+                    </div>
+                    <div class="toggle-prof settings-param">
+                        <input type="checkbox" id="showProfessors">
+                        <label for="showProfessors">Professor Preview (Experimental, has bugs)</label>
+                    </div>
                 </div>
             </div>  
         </section>
@@ -120,7 +128,7 @@
                                 <th>Day</th>
                                 <th>Timings</th>
                                 <!-- EXPERIMENTAL -->
-                                <!-- <th>Instructor</th> -->
+                                <th class="prof-preview-exclusive hidden">Instructor</th>
                             </tr>
                         </thead>
                         <tbody>

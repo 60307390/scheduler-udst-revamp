@@ -1,6 +1,7 @@
 import { ConflictGraph, filterCourseOptions, getCompatibleSchedules, getConflictsFromCourseOptions, getNodeLookup } from "./core.js";
 import { CourseOptionNode, CourseOptions, Schedule, StringDict } from "./models.js";
 import { ScheduleTable } from "./scheduleTable.js";
+import { Settings } from "./settingsManager.js";
 
 // !!! IMPORTANT
 // Note for all future developers who see this code (including myself)
@@ -44,7 +45,7 @@ export class CoursePicker {
 
     private buttonCache = new Map<Key, HTMLButtonElement>();
 
-    private advancedMode: boolean = false;
+    // private advancedMode: boolean = false;
 
     constructor(courseOptionData: CourseOptions[], scheduleTable: ScheduleTable) {
         this.courseOptionData = courseOptionData;
@@ -59,12 +60,12 @@ export class CoursePicker {
     }
 
     enableAdvancedMode(): void {
-        this.advancedMode = true;
+        // this.advancedMode = true;
         this.refreshButtons();
     }
 
     disableAdvancedMode(): void {
-        this.advancedMode = false;
+        // this.advancedMode = false;
         this.refreshButtons();
     }
 
@@ -247,7 +248,7 @@ export class CoursePicker {
 
     onButtonHover(button: HTMLButtonElement, coursePickerObject: CoursePicker): void {
         coursePickerObject.showCoursePreview(button, coursePickerObject);
-        if (!coursePickerObject.advancedMode) {
+        if (!Settings.advancedMode) {
             return;
         }
 
@@ -266,7 +267,7 @@ export class CoursePicker {
     }
 
     onButtonHoverOut(button: HTMLButtonElement, coursePickerObject: CoursePicker): void {
-        if (!coursePickerObject.advancedMode)
+        if (!Settings.advancedMode)
             return;
         // Disable hover effect
         const courseCodeBtn = button.dataset.courseCode!;
@@ -315,7 +316,7 @@ export class CoursePicker {
             table.deleteRow(-1);
         }
 
-        // const MAX_NAME_LENGTH = 15;
+        const MAX_NAME_LENGTH = 15;
 
         option.section.timeSlots.forEach(timeSlot => {
             const tableRow = table.insertRow(-1);
@@ -326,15 +327,12 @@ export class CoursePicker {
             const dayCell = tableRow.insertCell(-1);
             const timingsCell = tableRow.insertCell(-1);
 
-            // EXPERIMENTAL -- Instructor Name Preview
-            // const instructorsCell = tableRow.insertCell(-1);
 
             sectionCell.className = "preview-section";
             roomNumberCell.className = "preview-room-number";
             lectureTypeCell.className = "preview-lecture-type";
             dayCell.className = "preview-day";
             timingsCell.className = "preview-timings";
-            // instructorsCell.className = "preview-instructor";
 
             sectionCell.innerText = `${timeSlot.sectionNumber}`;
             roomNumberCell.innerText = `${timeSlot.roomNumber}`;
@@ -342,16 +340,21 @@ export class CoursePicker {
             dayCell.innerText = `${timeSlot.day.substring(0, 3)}`
             timingsCell.innerText = `${timeTo12Hour(timeSlot.start)} - ${timeTo12Hour(timeSlot.end)}`;
 
-            // EXPERIMENTAL
-            // if (timeSlot.instructor.length > MAX_NAME_LENGTH) {
-            //     const splitName = timeSlot.instructor.split(' ');
-            //     instructorsCell.innerText = splitName[0];
-            //     if (splitName.length > 1)
-            //         instructorsCell.innerText += " " + splitName[1];
-            //     instructorsCell.innerText += " ...";
-            // } else {
-            //     instructorsCell.innerText = timeSlot.instructor;
-            // }
+            if (!Settings.showProfessors)
+                return;
+
+            // EXPERIMENTAL -- Instructor Name Preview
+            const instructorsCell = tableRow.insertCell(-1);
+            instructorsCell.className = "preview-instructor";
+            if (timeSlot.instructor.length > MAX_NAME_LENGTH) {
+                const splitName = timeSlot.instructor.split(' ');
+                instructorsCell.innerText = splitName[0];
+                if (splitName.length > 1)
+                    instructorsCell.innerText += " " + splitName[1];
+                instructorsCell.innerText += " ...";
+            } else {
+                instructorsCell.innerText = timeSlot.instructor;
+            }
         })
     }
 
@@ -387,6 +390,7 @@ export class CoursePicker {
         const allButtons = document.querySelectorAll<HTMLButtonElement>(".option-button");
         for (let optionButton of allButtons) {
             if (!optionButton.classList.contains("selected-button")) {
+                console.log("here");
                 optionButton.classList.remove(...buttonStates);
                 optionButton.classList.add("excluded-button");
                 optionButton.disabled = true;
@@ -396,9 +400,10 @@ export class CoursePicker {
 
     // EXPERIMENTAL
     refreshButtons(): void {
-        if (!this.advancedMode) {
+        if (!Settings.advancedMode) {
             this.disableAllButtons();
             this.enableButtonsPerSchedule();
+            console.log("here");
             return;
         }
         // Similar to disableAllButtons
@@ -445,7 +450,7 @@ export class CoursePicker {
                 const optionNo = confCourseOption.option.id;
                 const button = document.querySelector<HTMLButtonElement>(`button[data-course-code="${courseCode}"][data-option-number="${optionNo}"]`)!;
                 button.classList.add("hard-conflict-button");
-                button.disabled = true;
+                button.disabled = !Settings.hardConflictClickable;
             }
         })
 

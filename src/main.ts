@@ -1,36 +1,28 @@
 import { getAvailableCourseOptions } from "./core.js";
 import { CoursePicker } from "./coursePicker.js";
 import { ScheduleTable } from "./scheduleTable.js";
+import { SettingsManager } from "./settingsManager.js";
 
-// TODO
-// Fix
-let courseButtons: CoursePicker | undefined;
+let coursePicker: CoursePicker | undefined;
+const settingsManager = new SettingsManager();
+settingsManager.initSettings();
 
 function initialize(): void {
     let scheduleTextInput = document.getElementById("scheduleTextInput")! as HTMLInputElement;
 
     const scheduleTable = ScheduleTable.getInstance();
-
-    const allCourseOptions = getAvailableCourseOptions(scheduleTextInput.value);
-
-    console.log(allCourseOptions);
-
     scheduleTable.clear();
 
-    // const courseButtons = new CoursePicker(allCourseOptions, scheduleTable); (Try to avoid globals)
-    courseButtons = new CoursePicker(allCourseOptions, scheduleTable);
+    const allCourseOptions = getAvailableCourseOptions(scheduleTextInput.value);
+    console.log(allCourseOptions);
 
-    if (courseButtons) {
-        courseButtons.generateCourseButtons();
-        // courseButtons.enableButtonsPerSchedule();
-    }
-
+    coursePicker = new CoursePicker(allCourseOptions, scheduleTable);
+    coursePicker.generateCourseButtons();
+    settingsManager.setCoursePicker(coursePicker);
 }
 
 function clearAll(): void {
-    if (courseButtons) {
-        courseButtons.clearAll();
-    }
+    coursePicker?.clearAll();
 }
 
 const clearButton = document.getElementById("clearButton")!;
@@ -51,22 +43,41 @@ exampleDataButton.addEventListener("click", function() {
         })
 });
 
-const toggleAdvancedCheckbox = document.getElementById("toggleAdvancedMode")! as HTMLInputElement;
-toggleAdvancedCheckbox.addEventListener("click", function() {
-    const advancedModeDisplayItems: NodeListOf<HTMLElement> = document.querySelectorAll(".adv-mode-exclusive");
-    if (this.checked) {
-        courseButtons?.enableAdvancedMode();
-        for (let element of advancedModeDisplayItems) {
-            element.classList.remove("hidden");
-        }
-    } else {
-        courseButtons?.disableAdvancedMode();
-        for (let element of advancedModeDisplayItems) {
-            element.classList.add("hidden");
-        }
-    }
-})
-
+// const toggleAdvancedCheckbox = document.getElementById("toggleAdvancedMode")! as HTMLInputElement;
+// toggleAdvancedCheckbox.addEventListener("click", function() {
+//     const advancedModeDisplayItems: NodeListOf<HTMLElement> = document.querySelectorAll(".adv-mode-exclusive");
+//     Settings.advancedMode = this.checked;
+//     if (this.checked) {
+//         for (let element of advancedModeDisplayItems) {
+//             element.classList.remove("hidden");
+//         }
+//     } else {
+//         for (let element of advancedModeDisplayItems) {
+//             element.classList.add("hidden");
+//         }
+//     }
+//     courseButtons?.refreshButtons();
+// })
+//
+// const showProfessors = document.getElementById("showProfessors")! as HTMLInputElement;
+// showProfessors.addEventListener("click", function() {
+//     const profPreviewDisplayItems: NodeListOf<HTMLElement> = document.querySelectorAll(".prof-preview-exclusive");
+//     Settings.showProfessors = this.checked;
+//     if (this.checked) {
+//         for (let element of profPreviewDisplayItems)
+//             element.classList.remove("hidden");
+//     } else {
+//         for (let element of profPreviewDisplayItems)
+//             element.classList.add("hidden");
+//     }
+// })
+//
+// const toggleHardConflictClick = document.getElementById("toggleHardConflictClick")! as HTMLInputElement;
+// toggleHardConflictClick.addEventListener("click", function() {
+//     Settings.hardConflictClickable = this.checked;
+//     courseButtons?.refreshButtons();
+// })
+//
 // window.addEventListener('beforeunload', function(e) {
 //     e.preventDefault();
 //     e.returnValue = true;
