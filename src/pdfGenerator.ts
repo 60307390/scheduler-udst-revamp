@@ -5,6 +5,10 @@ export async function exportDivToPDF(element: HTMLElement, fileName: string) {
     if (!element)
         throw new Error(`Element does not exist`);
 
+    await document.fonts.ready;
+
+    await new Promise(resolve => setTimeout(resolve, 100));
+
     // Clone element to isolate styles
     // Capture div as image
     const canvas = await html2canvas(element, {
@@ -13,6 +17,9 @@ export async function exportDivToPDF(element: HTMLElement, fileName: string) {
         logging: false, // Disable console logs
         backgroundColor: "#ffffff",
         allowTaint: true,
+        foreignObjectRendering: false, // Try toggling this
+        imageTimeout: 15000, // Increase timeout
+        removeContainer: true,
     });
 
     // Calculate PDF dimensions
