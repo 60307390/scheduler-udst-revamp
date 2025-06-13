@@ -171,6 +171,7 @@ function extractInstructors(optionBlock: string): string[] {
     const instructorLines = [];
     for (let i = roomIndex + 2; i < lines.length; i++) {
         if (/Open Seats/.test(lines[i])) break;
+        if (/\d{2}\.\d\.\d{2,}/.test(lines[i])) continue;
         if (lines[i].trim()) instructorLines.push(lines[i].trim());
     }
 
