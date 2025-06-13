@@ -390,7 +390,6 @@ export class CoursePicker {
         const allButtons = document.querySelectorAll<HTMLButtonElement>(".option-button");
         for (let optionButton of allButtons) {
             if (!optionButton.classList.contains("selected-button")) {
-                console.log("here");
                 optionButton.classList.remove(...buttonStates);
                 optionButton.classList.add("excluded-button");
                 optionButton.disabled = true;
@@ -403,7 +402,6 @@ export class CoursePicker {
         if (!Settings.advancedMode) {
             this.disableAllButtons();
             this.enableButtonsPerSchedule();
-            console.log("here");
             return;
         }
         // Similar to disableAllButtons
