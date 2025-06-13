@@ -18,6 +18,7 @@ export class SettingsManager {
             Settings.advancedMode = checked;
             this.coursePicker?.refreshButtons();
             toggleElements(".adv-mode-exclusive", checked);
+            toggleElements(".simple-mode-exclusive", !checked);
         });
 
         setupCheckbox("showProfessors", (checked) => {
