@@ -170,7 +170,9 @@ export class CoursePicker {
             coursePickerObject.scheduleTable.removeCourse(courseCodeBtn);
 
             coursePickerObject.selectedKeys.delete(`${courseCodeBtn}-${optionNumberBtn}`);
-            const conflictingKeys: Set<Key> = coursePickerObject.conflictGraph.get(`${courseCodeBtn}-${optionNumberBtn}`)!;
+            const conflictingKeys = coursePickerObject.conflictGraph.get(`${courseCodeBtn}-${optionNumberBtn}`);
+            if (!conflictingKeys)
+                return;
             for (let key of conflictingKeys) {
                 coursePickerObject.hardConflictKeys.delete(key);
             }
