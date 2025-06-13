@@ -68,3 +68,9 @@ Class Selection
  ![5-exclude-course.png](demo/assets/5-exclude-course.png)
 
  - Play around with the selections to visualize schedules.
+
+### Advanced Mode
+
+- Optional mode where you can visibly see conflicts
+- Demo showcase explaining each feature:
+
