@@ -13,7 +13,6 @@ export class SettingsManager {
         this.coursePicker = coursePicker;
     }
 
-    // Why not constructor? To be more explicit
     initSettings(): void {
         setupCheckbox("toggleAdvancedMode", (checked) => {
             Settings.advancedMode = checked;

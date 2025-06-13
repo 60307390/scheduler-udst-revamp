@@ -30,7 +30,6 @@ clearButton.addEventListener("click", clearAll);
 
 const generateScheduleButton = document.getElementById("generateSchedule")!;
 generateScheduleButton.addEventListener("click", initialize);
-// export { CoursePicker as CourseButtons };
 
 const exampleDataButton = document.getElementById("exampleData")!;
 exampleDataButton.addEventListener("click", function() {
@@ -43,41 +42,6 @@ exampleDataButton.addEventListener("click", function() {
         })
 });
 
-// const toggleAdvancedCheckbox = document.getElementById("toggleAdvancedMode")! as HTMLInputElement;
-// toggleAdvancedCheckbox.addEventListener("click", function() {
-//     const advancedModeDisplayItems: NodeListOf<HTMLElement> = document.querySelectorAll(".adv-mode-exclusive");
-//     Settings.advancedMode = this.checked;
-//     if (this.checked) {
-//         for (let element of advancedModeDisplayItems) {
-//             element.classList.remove("hidden");
-//         }
-//     } else {
-//         for (let element of advancedModeDisplayItems) {
-//             element.classList.add("hidden");
-//         }
-//     }
-//     courseButtons?.refreshButtons();
-// })
-//
-// const showProfessors = document.getElementById("showProfessors")! as HTMLInputElement;
-// showProfessors.addEventListener("click", function() {
-//     const profPreviewDisplayItems: NodeListOf<HTMLElement> = document.querySelectorAll(".prof-preview-exclusive");
-//     Settings.showProfessors = this.checked;
-//     if (this.checked) {
-//         for (let element of profPreviewDisplayItems)
-//             element.classList.remove("hidden");
-//     } else {
-//         for (let element of profPreviewDisplayItems)
-//             element.classList.add("hidden");
-//     }
-// })
-//
-// const toggleHardConflictClick = document.getElementById("toggleHardConflictClick")! as HTMLInputElement;
-// toggleHardConflictClick.addEventListener("click", function() {
-//     Settings.hardConflictClickable = this.checked;
-//     courseButtons?.refreshButtons();
-// })
-//
 // window.addEventListener('beforeunload', function(e) {
 //     e.preventDefault();
 //     e.returnValue = true;
