@@ -377,7 +377,8 @@ export class CoursePicker {
 
         currentCourseSchedules.forEach(schedule => {
             Array.from(schedule.selections.entries()).forEach(([course, option]) => {
-                const button = document.querySelector<HTMLButtonElement>(`button[data-course-code="${course.code}"][data-option-number="${option.id}"]`)!;
+                const key = `${course.code}-${option.id}`;
+                const button = this.buttonCache.get(key)!;
                 if (!button.classList.contains("selected-button")) {
                     button.classList.remove(...buttonStates);
                     button.disabled = false;
