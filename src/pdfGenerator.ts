@@ -11,6 +11,8 @@ export async function exportDivToPDF(element: HTMLElement, fileName: string) {
         scale: 2, // Higher quality
         useCORS: true, // For external resources
         logging: false, // Disable console logs
+        backgroundColor: "#ffffff",
+        allowTaint: true,
     });
 
     // Calculate PDF dimensions
