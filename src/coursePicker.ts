@@ -235,11 +235,12 @@ export class CoursePicker {
             coursePickerObject.selectedOptions[courseCode] = null;
         } else {
             for (let optionButton of courseOptionGrid.children) {
-                optionButton.classList.remove("selected-button");
+                optionButton.classList.remove("selected-button", "available-button");
             }
-            // TODO: Rework into better logic
+            const optionNumber = coursePickerObject.selectedOptions[courseCode];
             coursePickerObject.selectedOptions[courseCode] = -1;
             coursePickerObject.scheduleTable.removeCourse(courseCode);
+            coursePickerObject.selectedKeys.delete(`${courseCode}-${optionNumber}`);
         }
         coursePickerObject.filteredCourseOptions = filterCourseOptions(coursePickerObject.courseOptionData, coursePickerObject.selectedOptions, coursePickerObject.excludedOptions);
 
@@ -371,8 +372,6 @@ export class CoursePicker {
     }
 
     enableButtonsPerSchedule(): void {
-        // const allButtons = document.querySelectorAll<HTMLButtonElement>(".option-button");
-
         let currentCourseSchedules = this.getCurrentCourseSchedules();
 
         currentCourseSchedules.forEach(schedule => {
@@ -441,15 +440,13 @@ export class CoursePicker {
         
         // Restore all hard conflicts
         // Look at all selected options, and mark all their conflicting options as hard conflicts
+        // TODO: Do you really need selectedKeys? 
         this.selectedKeys.forEach(key => {
             const confCourseOptions = this.conflictGraph.get(key);
             if (!confCourseOptions)
                 return;
             for (let confKey of confCourseOptions.keys()) {
-                const confCourseOption = this.nodeLookUp.get(confKey)!;
-                const courseCode = confCourseOption.course.code;
-                const optionNo = confCourseOption.option.id;
-                const button = document.querySelector<HTMLButtonElement>(`button[data-course-code="${courseCode}"][data-option-number="${optionNo}"]`)!;
+                const button = this.buttonCache.get(confKey)!;
                 button.classList.add("hard-conflict-button");
                 button.disabled = !Settings.hardConflictClickable;
             }
@@ -460,8 +457,9 @@ export class CoursePicker {
         let currentCourseSchedules = this.getCurrentCourseSchedules();
         currentCourseSchedules.forEach(schedule => {
             Array.from(schedule.selections.entries()).forEach(([course, option]) => {
-                const button = document.querySelector<HTMLButtonElement>(`button[data-course-code="${course.code}"][data-option-number="${option.id}"]`)!;
-                if (!button.classList.contains("selected-button") || button.classList.contains("excluded-button")) {
+                const key = `${course.code}-${option.id}`;
+                const button = this.buttonCache.get(key)!;
+                if (!button.classList.contains("selected-button") && !button.classList.contains("excluded-button")) {
                     button.classList.remove("soft-conflict-button");
                     button.classList.add("available-button");
                 }
@@ -472,21 +470,20 @@ export class CoursePicker {
 
     clearAll(): void {
         for (const course in this.selectedOptions) {
-            // if (!this.selectedFilters[course].equals([-1, -1]))
-            if (this.selectedOptions[course] && !(this.selectedOptions[course] === -1))
+            if (this.selectedOptions[course] && this.selectedOptions[course] !== -1) {
                 this.selectedOptions[course] = null;
+            }
             this.excludedOptions[course].clear();
         }
+        this.selectedKeys.clear();
 
         const allButtons = document.querySelectorAll<HTMLButtonElement>(".option-button");
         for (let optionButton of allButtons) {
-            optionButton.classList.remove("selected-button");
-            optionButton.classList.remove("excluded-button");
+            optionButton.classList.remove("selected-button", "excluded-button");
         }
 
         this.filteredCourseOptions = filterCourseOptions(this.courseOptionData, this.selectedOptions, this.excludedOptions);
-        this.disableAllButtons();
-        this.enableButtonsPerSchedule();
+        this.refreshButtons();
 
         this.scheduleTable.clear();
         this.clearCoursePreview();
