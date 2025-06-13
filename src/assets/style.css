@@ -483,6 +483,7 @@ td {
     position: relative;
 }
 
+/* For printing */
 .header {
     background-color: white !important;
     color: #222222 !important;
