@@ -73,4 +73,5 @@ Class Selection
 
 - Optional mode where you can visibly see conflicts, instead of it just being disabled.
 - Demo showcasing each feature:
+
 https://github.com/user-attachments/assets/89147849-1bf5-4630-9ebe-87f713398885
