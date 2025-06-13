@@ -72,5 +72,5 @@ Class Selection
 ### Advanced Mode
 
 - Optional mode where you can visibly see conflicts
-- Demo showcase explaining each feature:
+- Demo showcasing each feature:
 
