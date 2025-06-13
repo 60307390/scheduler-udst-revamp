@@ -233,6 +233,7 @@ export function getAvailableCourseOptions(text: string): Array<CourseOptions> {
                 let prevStart: string | null = null;
                 let prevEnd: string | null = null;
                 let prevRoom: string = roomNumbers[0];
+                let prevInstructor: string | undefined = instructorNames[0];
 
                 // for (const [_, day, timing] of dayTimeMatches) {
                 dayMatches.forEach((day, index) => {
@@ -270,7 +271,12 @@ export function getAvailableCourseOptions(text: string): Array<CourseOptions> {
                     const lectureType = lectureTypes[sectionIndex];
                     const sectionNumber = sectionNumbers[sectionIndex];
 
-                    const instructor = instructorNames[index];
+                    let instructor = instructorNames[index];
+                    if (!instructor && prevInstructor) {
+                        instructor = prevInstructor;
+                    } else {
+                        prevInstructor = instructor;
+                    }
 
                     optionData.section.timeSlots.push(new TimeSlot(
                         day,
