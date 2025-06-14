@@ -139,13 +139,17 @@ a:visited:hover {
     text-align: left;
 }
 
+.input-heading {
+    margin-bottom: 20px;
+}
+
 .input-heading h3 {
     font-size: 24px;
     margin: 0px;
 }
 
 .input-heading p {
-    margin: 5px 0px 20px 0px;
+    margin: 10px 0px;
     /* font-style: italic; */
 }
 
