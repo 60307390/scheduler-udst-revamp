@@ -25,8 +25,12 @@ npm run dev
 
 ## How to use the app
 
+- Note: **PC ONLY**
+
 **FULL VIDEO DEMO COMING SOON** (whenever enrollment period for next sem starts)
 
+
+### Entering Classes (Schedule Text)
 
 - In PeopleSoft, go to the Enrollment page for classes (Manage Classes > Enrol).
 - Then, select the class that you want to put in the schedule using "Select Class" button (Or go to the course in **Course Catalog**).
@@ -57,6 +61,9 @@ Course Information
 Class Selection
 ...
 ```
+- Recommended to save this text into a `.txt` file after adding everything, so it can be easily reused later.
+
+### Creating Schedules
 
  - Hover over the *option buttons* to preview the sections, room numbers, timings of that option. An **option** refers to the course's option you see in PeopleSoft "Course Information" page.
  ![3-hover-option.png](demo/assets/3-hover-option.png)
