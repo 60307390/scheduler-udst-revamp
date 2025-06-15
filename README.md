@@ -64,6 +64,14 @@ Class Selection
 
 ### Creating Schedules
 
+#### Demo Video
+
+https://github.com/user-attachments/assets/99d5a8ac-8593-4bf2-8ed9-c833e863a9c4
+
+<br><br>
+  
+ - Either refer to the demo video above or read below
+
  - Hover over the *option buttons* to preview the sections, room numbers, timings of that option. An **option** refers to the course's option you see in PeopleSoft "Course Information" page.
  ![3-hover-option.png](demo/assets/3-hover-option.png)
 
