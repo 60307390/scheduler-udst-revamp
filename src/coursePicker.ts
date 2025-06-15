@@ -59,19 +59,9 @@ export class CoursePicker {
         this.nodeLookUp = getNodeLookup(this.courseOptionData);
     }
 
-    enableAdvancedMode(): void {
-        // this.advancedMode = true;
-        this.refreshButtons();
-    }
-
-    disableAdvancedMode(): void {
-        // this.advancedMode = false;
-        this.refreshButtons();
-    }
-
-    updateFilteredCourseOptions(): void {
-        this.filteredCourseOptions = filterCourseOptions(this.courseOptionData, this.selectedOptions, this.excludedOptions);
-    }
+    // updateFilteredCourseOptions(): void {
+    //     this.filteredCourseOptions = filterCourseOptions(this.courseOptionData, this.selectedOptions, this.excludedOptions);
+    // }
 
     getCurrentCourseSchedules(): Schedule[] {
         return getCompatibleSchedules(this.filteredCourseOptions);
@@ -166,18 +156,18 @@ export class CoursePicker {
             button.classList.remove("selected-button");
             coursePickerObject.selectedOptions[courseCodeBtn] = null;
             coursePickerObject.filteredCourseOptions = filterCourseOptions(courseOptionData, coursePickerObject.selectedOptions, coursePickerObject.excludedOptions);
-            coursePickerObject.refreshButtons();
             coursePickerObject.scheduleTable.removeCourse(courseCodeBtn);
 
             coursePickerObject.selectedKeys.delete(`${courseCodeBtn}-${optionNumberBtn}`);
+            coursePickerObject.refreshButtons();
+
+            // Don't need refreshButtons() after this for now
             const conflictingKeys = coursePickerObject.conflictGraph.get(`${courseCodeBtn}-${optionNumberBtn}`);
             if (!conflictingKeys)
                 return;
             for (let key of conflictingKeys) {
                 coursePickerObject.hardConflictKeys.delete(key);
             }
-            coursePickerObject.refreshButtons();
-
             return;
         }
 
@@ -202,6 +192,9 @@ export class CoursePicker {
         coursePickerObject.scheduleTable.addCourse(course, option, color);
 
         coursePickerObject.selectedKeys.add(`${course.code}-${option.id}`);
+        coursePickerObject.refreshButtons();
+
+        // Don't need refreshButtons() after this for now
         const conflictingCourseKeys = coursePickerObject.conflictGraph.get(`${course.code}-${option.id}`);
         if (!conflictingCourseKeys)
             return;
@@ -209,7 +202,6 @@ export class CoursePicker {
             coursePickerObject.hardConflictKeys.add(key);
         }
 
-        coursePickerObject.refreshButtons();
     }
 
     excludeCourseOption(button: HTMLButtonElement, coursePickerObject: CoursePicker): void {
@@ -230,7 +222,6 @@ export class CoursePicker {
     toggleCourse(checkbox: HTMLInputElement, coursePickerObject: CoursePicker): void {
         const courseCode = checkbox.dataset.courseCode!;
         const allOptionsGrid = document.querySelectorAll<HTMLElement>(".options-grid");
-        // const courseOptionGrid = Array.from(allOptionsGrid).find(optGrid => optGrid.children[0].dataset.courseCode === courseCode);
         const courseOptionGrid = Array.from(allOptionsGrid.values()).find((x: HTMLElement) => x.dataset.courseCode === courseCode)!;
 
         if (checkbox.checked === true) {
@@ -427,20 +418,10 @@ export class CoursePicker {
                 }
             }
         }
-
-        // Restore all hard conflicts
-        // this.hardConflictKeys.forEach(key => {
-        //     const courseOption = this.nodeLookUp.get(key)!;
-        //     const courseCode = courseOption.course.code;
-        //     const optionNo = courseOption.option.id;
-        //     const button = document.querySelector<HTMLButtonElement>(`button[data-course-code="${courseCode}"][data-option-number="${optionNo}"]`)!;
-        //     button.classList.add("hard-conflict-button");
-        //     button.disabled = true;
-        // })
         
         // Restore all hard conflicts
         // Look at all selected options, and mark all their conflicting options as hard conflicts
-        // TODO: Do you really need selectedKeys? 
+        // TODO: Do you really need selectedKeys? Can use selectedOptions?
         this.selectedKeys.forEach(key => {
             const confCourseOptions = this.conflictGraph.get(key);
             if (!confCourseOptions)
