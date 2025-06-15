@@ -59,6 +59,8 @@ Class Selection
 ```
 - Recommended to save this text into a `.txt` file after adding everything so it can be easily reused later.
 
+<br>
+
 ### Creating Schedules
 
 #### Demo Video
@@ -79,6 +81,8 @@ https://github.com/user-attachments/assets/99d5a8ac-8593-4bf2-8ed9-c833e863a9c4
  ![5-exclude-course.png](demo/assets/5-exclude-course.png)
 
  - Play around with the selections to visualize schedules.
+
+<br>
 
 ### Advanced Mode
 
