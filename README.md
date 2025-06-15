@@ -25,9 +25,6 @@ npm run dev
 
 ## How to use the app
 
-**FULL VIDEO DEMO COMING SOON** (whenever enrollment period for next sem starts)
-
-
 ### Entering Classes (Schedule Text)
 
 - Works in **PC only**.
