@@ -33,7 +33,7 @@ export class ScheduleTable {
                 hourStr = `${hour - 12}`;
                 suffix = "PM";
             }
-            return `${hourStr}:${minuteStr}${suffix}`
+            return `${hourStr}:${minuteStr}${suffix}`;
         };
 
         for (let hour = 8; hour <= 20; hour++) {
@@ -64,18 +64,22 @@ export class ScheduleTable {
         const rowHeight = document.querySelector(".schedule-cell")!.getBoundingClientRect().height;
         // console.log(rowHeight);
 
-        let timeStrToInt = function(timeStr: string) {
+        // see utils.ts
+        const timeStrToInt = function(timeStr: string) {
             const hour = parseInt(timeStr.split(":")[0]);
             const minute = parseInt(timeStr.split(":")[1]);
             return hour + (minute / 60);
         }
 
-        let timeTo12Hour = function(timeStr: string) {
-            let hour: number | string = timeStr.split(":")[0];
+        // see utils.ts
+        const timeTo12Hour = function(timeStr: string) {
+            let hour: number = parseInt(timeStr.split(":")[0]);
             let minute = timeStr.split(":")[1];
             let suffix = "AM";
-            if (parseInt(hour) > 12) {
-                hour = parseInt(hour) - 12;
+            if (hour > 12) {
+                hour -= 12;
+                suffix = "PM";
+            } else if (hour == 12) {
                 suffix = "PM";
             }
             return `${hour}:${minute}${suffix}`

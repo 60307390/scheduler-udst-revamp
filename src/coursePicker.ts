@@ -288,17 +288,18 @@ export class CoursePicker {
         const course = courseOption.course;
         const option = courseOption.options.find(option => option.id === optionNumberBtn)!;
 
+        // see utils.ts
         const timeTo12Hour = function(timeStr: string) {
-            let hour: number | string = timeStr.split(":")[0];
+            let hour: number = parseInt(timeStr.split(":")[0]);
             let minute = timeStr.split(":")[1];
             let suffix = "AM";
-            if (parseInt(hour) > 12) {
-                hour = parseInt(hour) - 12;
+            if (hour > 12) {
+                hour -= 12;
                 suffix = "PM";
-            } else if (hour == "12") {
+            } else if (hour == 12) {
                 suffix = "PM";
             }
-            return `${hour}:${minute}${suffix}`
+            return `${hour}:${minute}${suffix}`;
         }
 
         const previewHeading = document.querySelector(".preview-course-title")! as HTMLElement;
