@@ -236,33 +236,28 @@ export function getAvailableCourseOptions(text: string): Array<CourseOptions> {
                 let prevRoom: string | undefined = roomNumbers[0];
                 let prevInstructor: string | undefined = instructorNames[0];
 
-                // for (const [_, day, timing] of dayTimeMatches) {
-                dayMatches.forEach((day, index) => {
-                    const timing = timeMatches[index];
-                    const [startStr, endStr] = timing.split(" to ").map(s => s.trim());
-                    const parseTimeTo24 = (timeStr: string) => {
+                const parseTimeTo24 = (timeStr: string) => {
+                        const time = timeStr.split(/[AP]M/)[0];
+                        let [hour, minutes] = time.split(":").map(Number);
+
                         // If 12-hour format
                         if (/[AP]M/.test(timeStr)) {
-                            const time = timeStr.split(/[AP]M/)[0];
                             const suffix = timeStr.slice(-2);
-                            let [hour, minutes] = time.split(":").map(Number);
                             if (suffix === "PM" && hour !== 12)
                                 hour += 12;
                             if (suffix === "AM" && hour === 12)
                                 hour = 0;
-                            const hourStr = hour.toString().padStart(2, "0");
-                            const minuteStr = minutes.toString().padStart(2, "0");
-
-                            return `${hourStr}:${minuteStr}:00`;
                         }
 
-                        // If 24-hour format
-                        let [hour, minutes] = timeStr.split(":").map(Number);
                         const hourStr = hour.toString().padStart(2, "0");
                         const minuteStr = minutes.toString().padStart(2, "0");
                         return `${hourStr}:${minuteStr}:00`;
-                    };
+                };
 
+                dayMatches.forEach((day, index) => {
+                    const timing = timeMatches[index];
+                    const [startStr, endStr] = timing.split(" to ").map(s => s.trim());
+                    
                     let start = parseTimeTo24(startStr);
                     let end = parseTimeTo24(endStr);
                     let roomNumber = roomNumbers[index] || prevRoom || "";
