@@ -3,9 +3,7 @@ import { CourseOptionNode, CourseOptions, Schedule, StringDict } from "./models.
 import { ScheduleTable } from "./scheduleTable.js";
 import { Settings } from "./settingsManager.js";
 
-// !!! IMPORTANT
-// Note for all future developers who see this code (including myself)
-// Don't panic. Yes, this is a mess.
+// Yes, this is a mess.
 // Yes, it will be cleaned up. But not now.
 //
 // "Nothing is more permanent than a temporary solution"
@@ -458,6 +456,7 @@ export class CoursePicker {
             this.excludedOptions[course].clear();
         }
         this.selectedKeys.clear();
+        this.hardConflictKeys.clear();
 
         const allButtons = document.querySelectorAll<HTMLButtonElement>(".option-button");
         for (let optionButton of allButtons) {
