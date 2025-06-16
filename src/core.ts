@@ -220,7 +220,7 @@ export function getAvailableCourseOptions(text: string): Array<CourseOptions> {
                     )
                 )
                 const dayRegex = /(Sunday|Monday|Tuesday|Wednesday|Thursday|Friday|Saturday)/g;
-                const timeRegex = /(\d{1,2}:\d{2}[AP]M\s+to\s+\d{1,2}:\d{2}[AP]M)/g;
+                const timeRegex = /(\d{1,2}:\d{2}[AP]?M?\s+to\s+\d{1,2}:\d{2}[AP]?M?)/g;
                 const dayMatches = Array.from(block.matchAll(dayRegex)).map(m => m[0]);
                 const timeMatches = Array.from(block.matchAll(timeRegex)).map(m => m[0]);
 
@@ -233,7 +233,7 @@ export function getAvailableCourseOptions(text: string): Array<CourseOptions> {
                 let sectionIndex = 0;
                 let prevStart: string | null = null;
                 let prevEnd: string | null = null;
-                let prevRoom: string = roomNumbers[0];
+                let prevRoom: string | undefined = roomNumbers[0];
                 let prevInstructor: string | undefined = instructorNames[0];
 
                 // for (const [_, day, timing] of dayTimeMatches) {
@@ -241,24 +241,31 @@ export function getAvailableCourseOptions(text: string): Array<CourseOptions> {
                     const timing = timeMatches[index];
                     const [startStr, endStr] = timing.split(" to ").map(s => s.trim());
                     const parseTimeTo24 = (timeStr: string) => {
-                        // const [time, suffix] = timeStr.split(/[AP]M/);
-                        const time = timeStr.split(/[AP]M/)[0];
-                        const suffix = timeStr.slice(-2);
-                        let [hour, minutes] = time.split(":").map(Number);
-                        if (suffix === "PM" && hour !== 12)
-                            hour += 12;
-                        if (suffix === "AM" && hour === 12)
-                            hour = 0;
+                        // If 12-hour format
+                        if (/[AP]M/.test(timeStr)) {
+                            const time = timeStr.split(/[AP]M/)[0];
+                            const suffix = timeStr.slice(-2);
+                            let [hour, minutes] = time.split(":").map(Number);
+                            if (suffix === "PM" && hour !== 12)
+                                hour += 12;
+                            if (suffix === "AM" && hour === 12)
+                                hour = 0;
+                            const hourStr = hour.toString().padStart(2, "0");
+                            const minuteStr = minutes.toString().padStart(2, "0");
 
+                            return `${hourStr}:${minuteStr}:00`;
+                        }
+
+                        // If 24-hour format
+                        let [hour, minutes] = timeStr.split(":").map(Number);
                         const hourStr = hour.toString().padStart(2, "0");
                         const minuteStr = minutes.toString().padStart(2, "0");
-
                         return `${hourStr}:${minuteStr}:00`;
                     };
 
-                    const start = parseTimeTo24(startStr);
-                    const end = parseTimeTo24(endStr);
-                    const roomNumber = roomNumbers[index] || prevRoom || "";
+                    let start = parseTimeTo24(startStr);
+                    let end = parseTimeTo24(endStr);
+                    let roomNumber = roomNumbers[index] || prevRoom || "";
 
                     if (prevStart && prevEnd) {
                         if (sectionIndex + 1 < lectureTypes.length && (start !== prevStart || end !== prevEnd || roomNumber !== prevRoom))
@@ -268,6 +275,10 @@ export function getAvailableCourseOptions(text: string): Array<CourseOptions> {
                     prevStart = start;
                     prevEnd = end;
                     prevRoom = roomNumber;
+
+                    if (!prevStart) start = "00:00:00";
+                    if (!prevEnd) end = "00:00:00";
+                    if (!prevRoom) roomNumber = "00.0.00";
 
                     const lectureType = lectureTypes[sectionIndex];
                     const sectionNumber = sectionNumbers[sectionIndex];
