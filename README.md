@@ -25,7 +25,7 @@ npm run dev
 
 ## How to use the app
 
-### Entering Classes (Schedule Text)
+### 1. Entering Classes (Schedule Text)
 
 - Works in **PC only**.
 - In PeopleSoft, go to the Enrollment page for classes (Manage Classes > Enrol).
@@ -40,36 +40,22 @@ npm run dev
 https://github.com/user-attachments/assets/d5592a0f-f8fe-47dc-aaab-63456935a131
 
 
-
-
-- For adding more classes, repeat the above steps and append to the text (add to the bottom of what you pasted):
-
-```
-DSAI 2201
-Introduction to Data Science & AI
-Course Information
-Class Selection
-...
-
-SOFT 2301
-Software Project Management
-Course Information
-Class Selection
-...
-```
 - Recommended to save this text into a `.txt` file after adding everything so it can be easily reused later.
 
 <br>
 
-### Creating Schedules
+### 2. Creating Schedules
 
 #### Demo Video
 
 https://github.com/user-attachments/assets/99d5a8ac-8593-4bf2-8ed9-c833e863a9c4
 
-<br><br>
+<br>
   
- - Either refer to the demo video above or read below
+Either refer to the demo video above or read below for more info:
+
+<details>
+<summary>More Info</summary>
 
  - Hover over the *option buttons* to preview the sections, room numbers, timings of that option. An **option** refers to the course's option you see in PeopleSoft "Course Information" page.
  ![3-hover-option.png](demo/assets/3-hover-option.png)
@@ -82,9 +68,11 @@ https://github.com/user-attachments/assets/99d5a8ac-8593-4bf2-8ed9-c833e863a9c4
 
  - Play around with the selections to visualize schedules.
 
+</details>
+
 <br>
 
-### Advanced Mode
+### 3. Advanced Mode (Optional)
 
 - Optional mode where you can visibly see conflicts, instead of it just being disabled.
 - Demo showcasing each feature:
